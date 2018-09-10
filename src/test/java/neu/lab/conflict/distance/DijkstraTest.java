@@ -12,6 +12,10 @@ import java.util.Set;
 import org.junit.Before;
 import org.junit.Test;
 
+import abandon.neu.lab.conflict.distance.Dijkstra;
+import abandon.neu.lab.conflict.distance.DijkstraMap;
+import abandon.neu.lab.conflict.distance.DijkstraNode;
+
 public class DijkstraTest {
 
 	@Before

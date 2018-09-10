@@ -5,13 +5,13 @@ import java.io.File;
 import java.io.FileWriter;
 import java.io.PrintWriter;
 
+import abandon.neu.lab.conflict.statics.ClassDup;
+import abandon.neu.lab.conflict.statics.ClassDups;
+import abandon.neu.lab.conflict.statics.NodeDup;
+import abandon.neu.lab.conflict.statics.NodeDups;
 import neu.lab.conflict.container.DepJars;
 import neu.lab.conflict.container.NodeAdapters;
 import neu.lab.conflict.container.Conflicts;
-import neu.lab.conflict.statics.ClassDup;
-import neu.lab.conflict.statics.ClassDups;
-import neu.lab.conflict.statics.NodeDup;
-import neu.lab.conflict.statics.NodeDups;
 import neu.lab.conflict.util.MavenUtil;
 import neu.lab.conflict.util.UserConf;
 import neu.lab.conflict.vo.Conflict;

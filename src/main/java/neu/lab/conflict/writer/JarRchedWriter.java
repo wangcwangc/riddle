@@ -12,13 +12,13 @@ import org.dom4j.Element;
 import org.dom4j.io.OutputFormat;
 import org.dom4j.io.XMLWriter;
 
+import abandon.neu.lab.conflict.statics.ClassDups;
+import abandon.neu.lab.conflict.statics.DupClsJarPair;
+import abandon.neu.lab.conflict.statics.DupClsJarPairs;
 import neu.lab.conflict.container.DepJars;
 import neu.lab.conflict.risk.node.DepJarNRisks;
 import neu.lab.conflict.risk.node.FourRow;
 import neu.lab.conflict.container.Conflicts;
-import neu.lab.conflict.statics.ClassDups;
-import neu.lab.conflict.statics.DupClsJarPair;
-import neu.lab.conflict.statics.DupClsJarPairs;
 import neu.lab.conflict.util.MavenUtil;
 import neu.lab.conflict.vo.Conflict;
 

@@ -8,7 +8,6 @@ import neu.lab.conflict.soot.SootNRiskCg;
 import neu.lab.conflict.util.MavenUtil;
 import neu.lab.conflict.util.UserConf;
 import neu.lab.conflict.writer.ClassDupRiskWriter;
-import neu.lab.conflict.writer.JarRchedWriter;
 
 @Mojo(name = "classDetect", defaultPhase = LifecyclePhase.PRE_INTEGRATION_TEST)
 public class ClsDetectMojo extends ConflictMojo{

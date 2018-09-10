@@ -9,9 +9,9 @@ import java.util.HashSet;
 import java.util.Map;
 import java.util.Set;
 
+import abandon.neu.lab.conflict.distance.MethodProbDistances;
 import neu.lab.conflict.container.Conflicts;
 import neu.lab.conflict.container.DepJars;
-import neu.lab.conflict.distance.MethodProbDistances;
 import neu.lab.conflict.graph.Book4path;
 import neu.lab.conflict.graph.Dog;
 import neu.lab.conflict.graph.Graph4distance;
@@ -23,14 +23,12 @@ import neu.lab.conflict.graph.Record4distance;
 import neu.lab.conflict.graph.Record4path;
 import neu.lab.conflict.graph.Dog.Strategy;
 import neu.lab.conflict.risk.jar.DepJarJRisk;
-import neu.lab.conflict.util.DebugUtil;
 import neu.lab.conflict.util.MavenUtil;
 import neu.lab.conflict.util.MySortedMap;
 import neu.lab.conflict.util.SootUtil;
 import neu.lab.conflict.vo.Conflict;
 import neu.lab.conflict.vo.DepJar;
 import neu.lab.evoshell.CallPathFile;
-import soot.toDex.Debug;
 
 public class TestCaseGenerator {
 	String outDir;
@@ -83,12 +81,13 @@ public class TestCaseGenerator {
 		String pathFile = outDir + "p_" + projectConflict + "@" + jarRisk.getVersion() + ".txt";
 		try {
 			Graph4distance distanceGraph = jarRisk.getGraph4distance();
-			//TODO debug distance graph.
+			
 			
 			if (distanceGraph.getAllNode().isEmpty()) {
 				return false;
 			}
-			GraphPrinter.printGraph(distanceGraph, "d:\\graph.txt", distanceGraph.getHostNds());
+			//TODO debug distance graph.
+//			GraphPrinter.printGraph(distanceGraph, "d:\\graph.txt", distanceGraph.getHostNds());
 			Map<String, IBook> distanceBooks = new Dog(distanceGraph).findRlt(distanceGraph.getHostNds(),
 					Conf.DOG_DEP_FOR_DIS, Strategy.NOT_RESET_BOOK);
 			Set<String> nds2remain = new HashSet<String>();

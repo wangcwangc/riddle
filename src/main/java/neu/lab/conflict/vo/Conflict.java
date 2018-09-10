@@ -5,9 +5,9 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
+import abandon.neu.lab.conflict.risk.ref.ConflictRRisk;
 import neu.lab.conflict.risk.jar.ConflictJRisk;
 import neu.lab.conflict.risk.node.ConflictNRisk;
-import neu.lab.conflict.risk.ref.ConflictRRisk;
 import neu.lab.conflict.util.MavenUtil;
 
 public class Conflict {

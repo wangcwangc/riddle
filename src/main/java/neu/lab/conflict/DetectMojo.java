@@ -6,12 +6,9 @@ import org.apache.maven.plugins.annotations.LifecyclePhase;
 import org.apache.maven.plugins.annotations.Mojo;
 import org.apache.maven.plugins.annotations.Parameter;
 
-import neu.lab.conflict.container.DepJars;
-import neu.lab.conflict.container.FinalClasses;
 import neu.lab.conflict.soot.JarAna;
 import neu.lab.conflict.soot.SootNRiskCg;
 import neu.lab.conflict.util.MavenUtil;
-import neu.lab.conflict.util.UserConf;
 import neu.lab.conflict.writer.JarRchedWriter;
 
 /**

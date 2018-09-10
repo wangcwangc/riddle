@@ -8,7 +8,7 @@ import java.util.Set;
 import org.dom4j.Element;
 import org.dom4j.tree.DefaultElement;
 
-import neu.lab.conflict.statics.DupClsJarPair;
+import abandon.neu.lab.conflict.statics.DupClsJarPair;
 import neu.lab.conflict.util.MathUtil;
 import neu.lab.conflict.util.MavenUtil;
 import neu.lab.conflict.util.SootUtil;

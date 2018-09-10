@@ -7,10 +7,10 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
+import abandon.neu.lab.conflict.distance.MethodProbDistances;
 import neu.lab.conflict.Conf;
 import neu.lab.conflict.GlobalVar;
 import neu.lab.conflict.container.DepJars;
-import neu.lab.conflict.distance.MethodProbDistances;
 import neu.lab.conflict.graph.Dog;
 import neu.lab.conflict.graph.Graph4distance;
 import neu.lab.conflict.graph.Graph4path;

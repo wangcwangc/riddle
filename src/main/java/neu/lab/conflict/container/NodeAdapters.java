@@ -8,7 +8,7 @@ import java.util.Set;
 import org.apache.maven.shared.dependency.tree.DependencyNode;
 
 import neu.lab.conflict.util.MavenUtil;
-import neu.lab.conflict.visitor.NodeAdapterCollector;
+import neu.lab.conflict.util.NodeAdapterCollector;
 import neu.lab.conflict.vo.DepJar;
 import neu.lab.conflict.vo.ManageNodeAdapter;
 import neu.lab.conflict.vo.NodeAdapter;

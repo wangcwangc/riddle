@@ -11,9 +11,9 @@ import java.util.Set;
 
 import abandon.neu.lab.conflict.graph.path1.Graph4MthdPath;
 import abandon.neu.lab.conflict.graph.path1.Node4MthdPath1;
-import neu.lab.conflict.Conf;
 import neu.lab.conflict.risk.node.NodeNRisk;
 import neu.lab.conflict.util.SootUtil;
+import neu.lab.conflict.util.Conf;
 import neu.lab.conflict.util.MavenUtil;
 import neu.lab.conflict.vo.DepJar;
 import neu.lab.conflict.vo.MethodCall;

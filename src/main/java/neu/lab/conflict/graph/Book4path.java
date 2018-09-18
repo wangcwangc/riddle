@@ -4,7 +4,7 @@ import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.Set;
 
-import neu.lab.conflict.Conf;
+import neu.lab.conflict.util.Conf;
 import neu.lab.conflict.util.MavenUtil;
 
 public class Book4path extends IBook {

@@ -6,7 +6,7 @@ import java.util.List;
 import java.util.Map;
 
 import neu.lab.conflict.util.SootUtil;
-import neu.lab.conflict.Conf;
+import neu.lab.conflict.util.Conf;
 import neu.lab.conflict.util.MavenUtil;
 import neu.lab.conflict.vo.ClassVO;
 import neu.lab.conflict.vo.MethodVO;

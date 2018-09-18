@@ -21,6 +21,7 @@ import neu.lab.conflict.container.AllCls;
 import neu.lab.conflict.container.DepJars;
 import neu.lab.conflict.container.NodeAdapters;
 import neu.lab.conflict.container.Conflicts;
+import neu.lab.conflict.util.Conf;
 import neu.lab.conflict.util.MavenUtil;
 import neu.lab.conflict.vo.DepJar;
 import neu.lab.evoshell.ShellConfig;

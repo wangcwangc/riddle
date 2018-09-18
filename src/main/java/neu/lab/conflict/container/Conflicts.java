@@ -5,7 +5,7 @@ import java.util.Iterator;
 import java.util.List;
 
 import neu.lab.conflict.vo.NodeAdapter;
-import neu.lab.conflict.Conf;
+import neu.lab.conflict.util.Conf;
 import neu.lab.conflict.vo.Conflict;
 
 public class Conflicts {

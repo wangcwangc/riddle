@@ -1,4 +1,4 @@
-package neu.lab.conflict;
+package neu.lab.conflict.util;
 
 public class Conf {
 	public static final boolean CLASS_DUP = false;

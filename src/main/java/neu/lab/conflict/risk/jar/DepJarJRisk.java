@@ -8,7 +8,6 @@ import java.util.Map;
 import java.util.Set;
 
 import abandon.neu.lab.conflict.distance.MethodProbDistances;
-import neu.lab.conflict.Conf;
 import neu.lab.conflict.GlobalVar;
 import neu.lab.conflict.container.DepJars;
 import neu.lab.conflict.graph.Dog;
@@ -26,6 +25,7 @@ import neu.lab.conflict.soot.SootRiskMthdFilter;
 import neu.lab.conflict.soot.SootRiskMthdFilter2;
 import neu.lab.conflict.soot.tf.JRiskDistanceCgTf;
 import neu.lab.conflict.soot.tf.JRiskMthdPathCgTf;
+import neu.lab.conflict.util.Conf;
 import neu.lab.conflict.util.MavenUtil;
 import neu.lab.conflict.vo.DepJar;
 import neu.lab.conflict.vo.MethodCall;
@@ -167,12 +167,13 @@ public class DepJarJRisk {
 	}
 
 	public Graph4path getGraph4mthdPath() {
-		if (getThrownMthds().size() > 0) {
-			IGraph iGraph = SootJRiskCg.i().getGraph4branch(this,new JRiskMthdPathCgTf(this));
-			if(iGraph!=null)
-				return (Graph4path)iGraph;
-		}
-		return new Graph4path(new HashMap<String, Node4path>(), new ArrayList<MethodCall>());
+//		if (getThrownMthds().size() > 0) {
+//			IGraph iGraph = SootJRiskCg.i().getGraph4branch(this,new JRiskMthdPathCgTf(this));
+//			if(iGraph!=null)
+//				return (Graph4path)iGraph;
+//		}
+//		return new Graph4path(new HashMap<String, Node4path>(), new ArrayList<MethodCall>());
+		return getGraph4distance().getGraph4path();
 	}
 
 	private Map<String, IBook> getBooks4distance() {

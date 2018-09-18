@@ -23,6 +23,7 @@ import neu.lab.conflict.graph.Record4distance;
 import neu.lab.conflict.graph.Record4path;
 import neu.lab.conflict.graph.Dog.Strategy;
 import neu.lab.conflict.risk.jar.DepJarJRisk;
+import neu.lab.conflict.util.Conf;
 import neu.lab.conflict.util.MavenUtil;
 import neu.lab.conflict.util.MySortedMap;
 import neu.lab.conflict.util.SootUtil;
@@ -41,7 +42,6 @@ public class TestCaseGenerator {
 	}
 
 	public void writePath() {
-
 		java.io.File f = new java.io.File(outDir);
 		if (!f.exists()) {
 			f.mkdirs();
@@ -82,7 +82,6 @@ public class TestCaseGenerator {
 		try {
 			Graph4distance distanceGraph = jarRisk.getGraph4distance();
 			
-			
 			if (distanceGraph.getAllNode().isEmpty()) {
 				return false;
 			}
@@ -118,7 +117,7 @@ public class TestCaseGenerator {
 			//			Graph4path pathGraph = jarRisk.getGraph4mthdPath();
 			Set<String> hostNds = pathGraph.getHostNds();
 			//TODO debug path graph.
-			GraphPrinter.printGraph(pathGraph, "d:\\graph_mthdPath.txt", hostNds);
+//			GraphPrinter.printGraph(pathGraph, "d:\\graph_mthdPath.txt", hostNds);
 
 			Map<String, IBook> books = new Dog(pathGraph).findRlt(hostNds, Conf.DOG_DEP_FOR_PATH,
 					Strategy.NOT_RESET_BOOK);

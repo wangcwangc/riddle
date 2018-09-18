@@ -9,8 +9,8 @@ import java.util.Set;
 import org.dom4j.Element;
 import org.dom4j.tree.DefaultElement;
 
-import neu.lab.conflict.Conf;
 import neu.lab.conflict.container.FinalClasses;
+import neu.lab.conflict.util.Conf;
 import neu.lab.conflict.util.MathUtil;
 import neu.lab.conflict.util.MavenUtil;
 import neu.lab.conflict.util.SootUtil;

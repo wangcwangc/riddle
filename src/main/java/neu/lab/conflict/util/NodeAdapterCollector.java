@@ -6,7 +6,6 @@ import java.util.Set;
 import org.apache.maven.shared.dependency.tree.DependencyNode;
 import org.apache.maven.shared.dependency.tree.traversal.DependencyNodeVisitor;
 
-import neu.lab.conflict.Conf;
 import neu.lab.conflict.container.NodeAdapters;
 import neu.lab.conflict.vo.NodeAdapter;
 

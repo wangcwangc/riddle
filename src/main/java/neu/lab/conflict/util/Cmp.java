@@ -11,7 +11,6 @@ import java.util.Map;
 
 import abandon.neu.lab.conflict.statics.ClassDup;
 import abandon.neu.lab.conflict.statics.NodeDup;
-import neu.lab.conflict.Conf;
 import neu.lab.conflict.soot.JarAna;
 import neu.lab.conflict.vo.ClassVO;
 import neu.lab.conflict.vo.MethodVO;

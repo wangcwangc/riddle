@@ -10,11 +10,11 @@ import org.dom4j.tree.DefaultElement;
 import abandon.neu.lab.conflict.graph.clsref.Graph4ClsRef;
 import abandon.neu.lab.conflict.graph.clsref.Record4ClsRefPath;
 import abandon.neu.lab.conflict.risk.ref.tb.LimitRefTb;
-import neu.lab.conflict.Conf;
 import neu.lab.conflict.container.AllCls;
 import neu.lab.conflict.graph.Dog;
 import neu.lab.conflict.graph.IBook;
 import neu.lab.conflict.graph.IRecord;
+import neu.lab.conflict.util.Conf;
 import neu.lab.conflict.vo.NodeAdapter;
 
 public class NodeRRisk {

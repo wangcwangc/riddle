@@ -5,6 +5,7 @@ import org.apache.maven.plugins.annotations.Mojo;
 
 import neu.lab.conflict.soot.JarAna;
 import neu.lab.conflict.soot.SootNRiskCg;
+import neu.lab.conflict.util.Conf;
 import neu.lab.conflict.util.MavenUtil;
 import neu.lab.conflict.util.UserConf;
 import neu.lab.conflict.writer.ClassDupRiskWriter;

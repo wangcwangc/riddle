@@ -5,8 +5,8 @@ import java.io.File;
 import java.io.FileWriter;
 import java.io.PrintWriter;
 
-import neu.lab.conflict.Conf;
 import neu.lab.conflict.container.Conflicts;
+import neu.lab.conflict.util.Conf;
 import neu.lab.conflict.util.MavenUtil;
 import neu.lab.conflict.vo.DepJar;
 import neu.lab.conflict.vo.NodeAdapter;

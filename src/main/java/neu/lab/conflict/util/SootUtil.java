@@ -10,7 +10,6 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
-import neu.lab.conflict.Conf;
 import neu.lab.conflict.vo.ClassVO;
 import neu.lab.conflict.vo.MethodVO;
 import soot.Scene;

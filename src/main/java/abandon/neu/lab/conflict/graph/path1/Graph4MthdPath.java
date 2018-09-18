@@ -11,9 +11,9 @@ import abandon.neu.lab.conflict.graph.filter.FilterInvoker;
 
 import java.util.Set;
 
-import neu.lab.conflict.Conf;
 import neu.lab.conflict.graph.IGraph;
 import neu.lab.conflict.graph.INode;
+import neu.lab.conflict.util.Conf;
 import neu.lab.conflict.util.MavenUtil;
 import neu.lab.conflict.vo.MethodCall;
 

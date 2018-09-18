@@ -3,7 +3,7 @@ package abandon.neu.lab.conflict.graph.filter;
 import java.util.ArrayList;
 import java.util.List;
 
-import neu.lab.conflict.Conf;
+import neu.lab.conflict.util.Conf;
 
 public class FilterInvoker {
 

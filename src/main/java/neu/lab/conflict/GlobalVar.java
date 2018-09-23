@@ -8,7 +8,7 @@ public class GlobalVar {
 	public static long time2calRef = 0;//
 	public static long time2filterRiskMthd = 0;//
 	public static long calFatherDefTime = 0;
-	public static boolean useAllJar = true;
+	public static boolean useAllJar ;
 	//TODO set type
 	public static boolean useTreeSet = false;
 }

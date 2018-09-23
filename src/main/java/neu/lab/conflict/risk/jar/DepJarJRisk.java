@@ -44,7 +44,7 @@ public class DepJarJRisk {
 		// calculate thrownMthd
 
 		// calculate call-graph
-
+ 
 	}
 
 	public String getVersion() {
@@ -121,6 +121,7 @@ public class DepJarJRisk {
 		if(GlobalVar.useAllJar) {
 			classpaths =  depJar.getRepalceCp();
 		}else {
+			MavenUtil.i().getLog().info("not add all jar to process");
 			classpaths = new ArrayList<String>();
 			//keep first is self
 			classpaths.addAll(this.depJar.getJarFilePaths(true));
@@ -133,7 +134,7 @@ public class DepJarJRisk {
 //			System.out.println("argsList.add(\"-process-dir\");");
 //			System.out.println("argsList.add(\"" + path.replace("\\", "\\\\") + "\");");
 //		}
-		
+//		
 		return classpaths;
 		
 	}
@@ -153,7 +154,7 @@ public class DepJarJRisk {
 //					System.out.println(riskMthd);
 //				}
 				MavenUtil.i().getLog().info("first riskmthd:" + getThrownMthds().iterator().next());
-				IGraph iGraph = SootJRiskCg.i().getGraph4branch(this,new JRiskDistanceCgTf(this));
+				IGraph iGraph = SootJRiskCg.i().getGraph4distance(this,new JRiskDistanceCgTf(this));
 				if (iGraph != null) {
 					graph4distance = (Graph4distance) iGraph;
 				} else {

@@ -13,14 +13,14 @@ import org.dom4j.tree.DefaultElement;
 
 import abandon.neu.lab.conflict.graph.clsref.Graph4ClsRef;
 import abandon.neu.lab.conflict.graph.clsref.Node4ClsRef;
+import abandon.neu.lab.conflict.risk.node.ConflictNRisk;
+import abandon.neu.lab.conflict.risk.node.DepJarNRisk;
 import abandon.neu.lab.conflict.risk.ref.tb.NoLimitRefTb;
 import javassist.ClassPool;
 import neu.lab.conflict.container.AllCls;
 import neu.lab.conflict.container.AllRefedCls;
 import neu.lab.conflict.container.DepJars;
 import neu.lab.conflict.container.NodeAdapters;
-import neu.lab.conflict.risk.node.ConflictNRisk;
-import neu.lab.conflict.risk.node.DepJarNRisk;
 import neu.lab.conflict.soot.JarAna;
 import neu.lab.conflict.util.MavenUtil;
 import neu.lab.conflict.util.SootUtil;
@@ -216,16 +216,7 @@ public class DepJar {
 		return onlyMthds;
 	}
 
-	public Set<String> getThrownMthds(DepJar usedJar) {
-		Set<String> thrownMthds = new HashSet<String>();
-		Set<String> usedMthds = new HashSet<String>();
-		for (String mthd : this.getAllMthd()) {
-			if (!usedMthds.contains(mthd)) {
-				thrownMthds.add(mthd);
-			}
-		}
-		return thrownMthds;
-	}
+
 
 	@Override
 	public boolean equals(Object obj) {
@@ -322,6 +313,17 @@ public class DepJar {
 		// if (diffMthd.contains("<init>") || diffMthd.contains("<clinit>")) {
 		return riskMthds;
 	}
+	
+	public Set<String> getThrownMthds(DepJar usedJar) {
+		Set<String> thrownMthds = new HashSet<String>();
+		Set<String> usedMthds = new HashSet<String>();
+		for (String mthd : this.getAllMthd()) {
+			if (!usedMthds.contains(mthd)) {
+				thrownMthds.add(mthd);
+			}
+		}
+		return thrownMthds;
+	}
 
 	/**
 	 * methods that this jar don't have.
@@ -338,7 +340,9 @@ public class DepJar {
 		}
 		return outMthds;
 	}
+	
 
+	
 	private NoLimitRefTb refTb;
 
 	public NoLimitRefTb getRefTb() {

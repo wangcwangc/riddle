@@ -8,7 +8,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
-import neu.lab.conflict.risk.node.NodeNRisk;
+import abandon.neu.lab.conflict.risk.node.NodeNRisk;
 import neu.lab.conflict.util.MavenUtil;
 import neu.lab.conflict.vo.MethodCall;
 import soot.MethodOrMethodContext;

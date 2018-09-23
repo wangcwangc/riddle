@@ -13,10 +13,10 @@ import org.apache.maven.shared.dependency.tree.DependencyNode;
 import org.dom4j.Element;
 import org.dom4j.tree.DefaultElement;
 
+import abandon.neu.lab.conflict.risk.node.DepJarNRisk;
+import abandon.neu.lab.conflict.risk.node.NodeNRisk;
 import neu.lab.conflict.container.DepJars;
 import neu.lab.conflict.container.NodeAdapters;
-import neu.lab.conflict.risk.node.DepJarNRisk;
-import neu.lab.conflict.risk.node.NodeNRisk;
 import neu.lab.conflict.util.ClassifierUtil;
 import neu.lab.conflict.util.MavenUtil;
 

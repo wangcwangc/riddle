@@ -71,37 +71,37 @@ public abstract class ConflictMojo extends AbstractMojo {
 
 	@Parameter(property = "append", defaultValue = "false")
 	public boolean append;
-	
+
 	@Parameter(property = "useAllJar", defaultValue = "true")
 	public boolean useAllJar;
-	
+
 	@Parameter(property = "disDepth")
 	public int disDepth = Integer.MAX_VALUE;
-	
+
 	@Parameter(property = "pathDepth")
 	public int pathDepth = Integer.MAX_VALUE;
-	
+
 	@Parameter(property = "callConflict")
 	public String callConflict = null;
-	
+
 	@Parameter(property = "findAllPath")
 	public boolean findAllPath = false;
-	
+
 	public int systemSize = 0;
-	
+
 	public long systemFileSize = 0;//byte
 
 	protected void initGlobalVar() throws Exception {
-		
+
 		MavenUtil.i().setMojo(this);
-		
+
 		Conf.DOG_DEP_FOR_DIS = disDepth;
 		Conf.DOG_DEP_FOR_PATH = pathDepth;
-		Conf.callConflict  = callConflict;
+		Conf.callConflict = callConflict;
 		Conf.findAllpath = findAllPath;
 		GlobalVar.useAllJar = useAllJar;
 		ShellConfig.mvnRep = MavenUtil.i().getMvnRep();
-		
+
 		NodeAdapters.init(root);
 		DepJars.init(NodeAdapters.i());// occur jar in tree
 
@@ -112,7 +112,7 @@ public abstract class ConflictMojo extends AbstractMojo {
 	}
 
 	private void validateSysSize() throws Exception {
-		
+
 		for (DepJar depJar : DepJars.i().getAllDepJar()) {
 			if (depJar.isSelected()) {
 				systemSize++;
@@ -125,11 +125,12 @@ public abstract class ConflictMojo extends AbstractMojo {
 		MavenUtil.i().getLog().warn("tree size:" + DepJars.i().getAllDepJar().size() + ", used size:" + systemSize
 				+ ", usedFile size:" + systemFileSize / 1000);
 
-//		if (DepJars.i().getAllDepJar().size() <= 50||systemFileSize / 1000>20000) {
-//			throw new Exception("project size error.");
-//		}
+		//		if (DepJars.i().getAllDepJar().size() <= 50||systemFileSize / 1000>20000) {
+		//			throw new Exception("project size error.");
+		//		}
 	}
 
+	@Override
 	public void execute() throws MojoExecutionException {
 		this.getLog().info("method detect start:");
 		long startTime = System.currentTimeMillis();

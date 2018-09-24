@@ -162,7 +162,7 @@ public class Dog {
 	 */
 	private void forward(String frontNode) {
 		//TODO debug dog
-		DebugUtil.print("d:\\dogTrace.txt", frontNode + " " + route.size());
+		DebugUtil.print("d:\\Decca\\dogTrace.txt", frontNode + " " + route.size());
 		// System.out.println("forward to " + frontNode);
 		INode node = graph.getNode(frontNode);
 		if (node != null) {

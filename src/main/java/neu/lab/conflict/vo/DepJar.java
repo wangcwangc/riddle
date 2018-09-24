@@ -331,7 +331,7 @@ public class DepJar {
 	 * @param testMthds
 	 * @return
 	 */
-	private Set<String> getOutMthds(Collection<String> testMthds) {
+	public Set<String> getOutMthds(Collection<String> testMthds) {
 		Set<String> jarMthds = getAllMthd();
 		Set<String> outMthds = new HashSet<String>();
 		for (String mthd : testMthds) {

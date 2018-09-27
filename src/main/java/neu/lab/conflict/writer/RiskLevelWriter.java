@@ -50,15 +50,19 @@ public class RiskLevelWriter {
 			root.addAttribute("project",
 					MavenUtil.i().getProjectGroupId() + ":" + MavenUtil.i().getProjectArtifactId());
 			root.addAttribute("projectInfo", MavenUtil.i().getProjectInfo());
-			Element elements = new DefaultElement("conflictRisks");
+			Element elements = new DefaultElement("conflicts");
 			//int i = 0;
 			
 			for (Conflict conflict : Conflicts.i().getConflicts()) {
 				
-				Element element = new DefaultElement("conflictRisk");
+				Element element = new DefaultElement("conflictJar");
 				elements.add(element);
-				element.addAttribute("conflict", conflict.toString());
+				element.addAttribute("groupId-artifactId", conflict.getSig());
+				element.addAttribute("versions", conflict.getVersions().toString());
+				element.addAttribute("riskLevel", "3/4");
 				element.add(PrintRiskMethod(conflict));
+				Element risksEle = element.addElement("RiskMethods");
+				risksEle.addAttribute("tip", "method that may be used but will not be loaded !");
 				//element.add(PrintRiskLevel());
 				//i++;
 				
@@ -95,7 +99,7 @@ public class RiskLevelWriter {
 	 * time:2018-9-23 13:30:09
 	 */
 	private Element PrintRiskMethod(Conflict conflict) {
-		Element elements = new DefaultElement("RiskMethods");
+		Element elements = new DefaultElement("versions");
 		//冲突的jar包
 		ConflictJRisk conflictJRisk = conflict.getJRisk();
 		for(DepJarJRisk jarRisk : conflictJRisk.getJarRisks()) {
@@ -120,15 +124,20 @@ public class RiskLevelWriter {
 						Book4path book = (Book4path) books.get(topMthd);
 						//DepJar usedJar =  conflict.getUsedDepJar();
 						for (IRecord iRecord : book.getRecords()) {
-							Element element = new DefaultElement("Method");
+							Element element = new DefaultElement("version");
 							elements.add(element);
 							Record4path record = (Record4path) iRecord;
 //							element.addAttribute("conflict",jarRisk.getVersion() + conflict.toString() + conflict.getUsedDepJar().getVersion());
 //							element.addAttribute("record", record.toString());
+							element.addAttribute("versionId", jarRisk.getVersion());
+							element.addAttribute("loaded", "" + jarRisk.getConflictJar().isSelected());
+//							element.addAttribute("methodName", record.getRiskMthd().toString().replace("<", "").replace(">", ""));
+							Element path = new DefaultElement("path");
+							element.add(path);
+							path.addText(record.getPathStr().toString().replace("<", "").replace(">", ""));
 							
-							element.addAttribute("methodName", record.getRiskMthd().toString().replace("<", "").replace(">", ""));
-							element.addAttribute("level", "3/4");
-							element.addText(record.getPathStr().toString().replace("<", "").replace(">", ""));
+//							element.addAttribute("level", "3/4");
+//							element.addText(record.getPathStr().toString().replace("<", "").replace(">", ""));
 							//for (String method : usedJar.getAllMthd()) {
 								//if (record.getRiskMthd().equals(method)) {
 //									element.addAttribute("thrownmthd", thrownmthd.toString());

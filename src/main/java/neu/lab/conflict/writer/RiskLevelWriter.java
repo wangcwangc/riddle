@@ -138,22 +138,7 @@ public class RiskLevelWriter {
 							
 //							element.addAttribute("level", "3/4");
 //							element.addText(record.getPathStr().toString().replace("<", "").replace(">", ""));
-							//for (String method : usedJar.getAllMthd()) {
-								//if (record.getRiskMthd().equals(method)) {
-//									element.addAttribute("thrownmthd", thrownmthd.toString());
-//									element.addAttribute("level", "3/4");
-//								} else {
-//									element.addAttribute("thrownmthd", thrownmthd.toString());
-//									element.addAttribute("level", "1/2");
-//								}
-							//}
-//							for (String thrownmthd : jarRisk.getThrownMthds()){
-//								if (record.getRiskMthd().equals(thrownmthd)) {
-//									element.addAttribute("thrownmthd", thrownmthd.toString());
-//									element.addAttribute("level", "3/4");
-//								} else {
-//									element.addAttribute("thrownmthd", thrownmthd.toString());
-//									element.addAttribute("level", "1/2");
+							
 //								}
 //							}
 							//usedJar错误的jar包

@@ -136,11 +136,7 @@ public class RiskLevelWriter {
 							element.add(path);
 							path.addText(record.getPathStr().toString().replace("<", "").replace(">", ""));
 							
-//							element.addAttribute("level", "3/4");
-//							element.addText(record.getPathStr().toString().replace("<", "").replace(">", ""));
-							
-//								}
-//							}
+//							
 							//usedJar错误的jar包
 							//usedJar.getOutMthds(record.get)
 							

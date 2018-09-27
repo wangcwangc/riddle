@@ -103,6 +103,17 @@ public class RiskLevelWriter {
 		//冲突的jar包
 		ConflictJRisk conflictJRisk = conflict.getJRisk();
 		for(DepJarJRisk jarRisk : conflictJRisk.getJarRisks()) {
+			
+			
+			Element element = new DefaultElement("version");
+			elements.add(element);
+			element.addAttribute("versionId", jarRisk.getVersion());
+			element.addAttribute("loaded", "" + jarRisk.getConflictJar().isSelected());
+//			element.addAttribute("methodName", record.getRiskMthd().toString().replace("<", "").replace(">", ""));
+			Element path = new DefaultElement("path");
+			element.add(path);
+				path.addText(jarRisk.getConflictJar().getAllDepPath());
+					
 			Graph4distance distanceGraph = jarRisk.getGraph4distance();
 
 			Graph4path pathGraph = distanceGraph.getGraph4path();
@@ -116,34 +127,35 @@ public class RiskLevelWriter {
 				
 			}
 			else {
-				Set<String> hostNodes = pathGraph.getHostNds();
-				Map<String, IBook> books = new Dog(pathGraph).findRlt(hostNodes, Conf.DOG_DEP_FOR_PATH,
-						Strategy.NOT_RESET_BOOK);
-				for (String topMthd : books.keySet()) {
-					if (hostNodes.contains(topMthd)) {
-						Book4path book = (Book4path) books.get(topMthd);
-						//DepJar usedJar =  conflict.getUsedDepJar();
-						for (IRecord iRecord : book.getRecords()) {
-							Element element = new DefaultElement("version");
-							elements.add(element);
-							Record4path record = (Record4path) iRecord;
-//							element.addAttribute("conflict",jarRisk.getVersion() + conflict.toString() + conflict.getUsedDepJar().getVersion());
-//							element.addAttribute("record", record.toString());
-							element.addAttribute("versionId", jarRisk.getVersion());
-							element.addAttribute("loaded", "" + jarRisk.getConflictJar().isSelected());
-//							element.addAttribute("methodName", record.getRiskMthd().toString().replace("<", "").replace(">", ""));
-							Element path = new DefaultElement("path");
-							element.add(path);
-							path.addText(record.getPathStr().toString().replace("<", "").replace(">", ""));
-							
+				
+//				Set<String> hostNodes = pathGraph.getHostNds();
+//				Map<String, IBook> books = new Dog(pathGraph).findRlt(hostNodes, Conf.DOG_DEP_FOR_PATH,
+//						Strategy.NOT_RESET_BOOK);
+//				for (String topMthd : books.keySet()) {
+//					if (hostNodes.contains(topMthd)) {
+//						Book4path book = (Book4path) books.get(topMthd);
+//						//DepJar usedJar =  conflict.getUsedDepJar();
+//						for (IRecord iRecord : book.getRecords()) {
+////							Element element = new DefaultElement("version");
+//							elements.add(element);
+//							Record4path record = (Record4path) iRecord;
+////							element.addAttribute("conflict",jarRisk.getVersion() + conflict.toString() + conflict.getUsedDepJar().getVersion());
+////							element.addAttribute("record", record.toString());
+//							element.addAttribute("versionId", jarRisk.getVersion());
+//							element.addAttribute("loaded", "" + jarRisk.getConflictJar().isSelected());
+////							element.addAttribute("methodName", record.getRiskMthd().toString().replace("<", "").replace(">", ""));
+////							Element path = new DefaultElement("path");
+//							element.add(path);
+//							path.addText(record.getPathStr().toString().replace("<", "").replace(">", ""));
 //							
-							//usedJar错误的jar包
-							//usedJar.getOutMthds(record.get)
-							
-							//dis2records.add(record.getPathlen(), record);
-						}
-					}
-				}
+////							
+//							//usedJar错误的jar包
+//							//usedJar.getOutMthds(record.get)
+//							
+//							//dis2records.add(record.getPathlen(), record);
+//						}
+//					}
+//				}
 			}
 		}
 		return elements;

@@ -59,7 +59,11 @@ public class RiskLevelWriter {
 				elements.add(element);
 				element.addAttribute("groupId-artifactId", conflict.getSig());
 				element.addAttribute("versions", conflict.getVersions().toString());
-				element.addAttribute("riskLevel", "3/4");
+				ConflictJRisk conflictJRisk = conflict.getJRisk();
+				//element.addAttribute("test", conflictJRisk.getRiskLevel() + "" + conflictJRisk.getJarRisks().size() + conflictJRisk.getJarRisks().get(0).getThrownMthds().toString());
+				
+				element.addAttribute("riskLevel", conflictJRisk.getRiskLevel() + "");
+				
 				element.add(PrintRiskMethod(conflict));
 				Element risksEle = element.addElement("RiskMethods");
 				risksEle.addAttribute("tip", "method that may be used but will not be loaded !");
@@ -104,7 +108,6 @@ public class RiskLevelWriter {
 		ConflictJRisk conflictJRisk = conflict.getJRisk();
 		for(DepJarJRisk jarRisk : conflictJRisk.getJarRisks()) {
 			
-			
 			Element element = new DefaultElement("version");
 			elements.add(element);
 			element.addAttribute("versionId", jarRisk.getVersion());
@@ -112,7 +115,7 @@ public class RiskLevelWriter {
 //			element.addAttribute("methodName", record.getRiskMthd().toString().replace("<", "").replace(">", ""));
 			Element path = new DefaultElement("path");
 			element.add(path);
-				path.addText(jarRisk.getConflictJar().getAllDepPath());
+			path.addText(jarRisk.getConflictJar().getAllDepPath());
 					
 			Graph4distance distanceGraph = jarRisk.getGraph4distance();
 

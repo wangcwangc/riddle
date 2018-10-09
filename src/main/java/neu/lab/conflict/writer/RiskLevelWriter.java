@@ -50,30 +50,9 @@ public class RiskLevelWriter {
 			root.addAttribute("project",
 					MavenUtil.i().getProjectGroupId() + ":" + MavenUtil.i().getProjectArtifactId());
 			root.addAttribute("projectInfo", MavenUtil.i().getProjectInfo());
-			Element elements = new DefaultElement("conflicts");
-			//int i = 0;
-			
 			for (Conflict conflict : Conflicts.i().getConflicts()) {
-				
-				Element element = new DefaultElement("conflictJar");
-				elements.add(element);
-				element.addAttribute("groupId-artifactId", conflict.getSig());
-				element.addAttribute("versions", conflict.getVersions().toString());
-				ConflictJRisk conflictJRisk = conflict.getJRisk();
-				//element.addAttribute("test", conflictJRisk.getRiskLevel() + "" + conflictJRisk.getJarRisks().size() + conflictJRisk.getJarRisks().get(0).getThrownMthds().toString());
-				
-				element.addAttribute("riskLevel", conflictJRisk.getRiskLevel() + "");
-				
-				element.add(PrintRiskMethod(conflict));
-				Element risksEle = element.addElement("RiskMethods");
-				risksEle.addAttribute("tip", "method that may be used but will not be loaded !");
-				//element.add(PrintRiskLevel());
-				//i++;
-				
-				//root.add(PrintRiskMethod(conflict));
+				root.add(PrintRiskLevel(conflict));
 			}
-			//root.addAttribute("i", ""+i);
-			root.add(elements);
 			xmlWriter.write(document);
 			xmlWriter.close();
 		} catch (Exception e) {
@@ -85,81 +64,42 @@ public class RiskLevelWriter {
 	 * author:wangchao
 	 * time:2018-9-24 13:25:18
 	 */
-	private Element PrintRiskLevel() {
-		Element elements = new DefaultElement("NoRiskMethods");
-		for (NodeAdapter nodeAdapter : NodeAdapters.i().getAllNodeAdapter()) {
-			elements.addText(nodeAdapter.toString());
-			
-		}
-		for (DepJar depJar : DepJars.i().getAllDepJar()) {
-			elements.addText(depJar.toString());
-			
+	private Element PrintRiskLevel(Conflict conflict) {
+		Element elements = new DefaultElement("conflicts");
+		Element element = new DefaultElement("conflictJar");
+		elements.add(element);
+		element.addAttribute("groupId-artifactId", conflict.getSig());
+		element.addAttribute("versions", conflict.getVersions().toString());
+		ConflictJRisk conflictJRisk = conflict.getJRisk();
+		int riskLevel = conflictJRisk.getRiskLevel();
+		element.addAttribute("riskLevel", riskLevel + "");
+		
+		element.add(AddPath(conflict));
+		Element risksEle = element.addElement("RiskMethods");
+		if (riskLevel == 3) {
+			risksEle.addAttribute("tip", "method that may be used but will not be loaded !");
+		} else {
+			risksEle.addAttribute("tip", "method that be used and be loaded !");
 		}
 		return elements;
 	}
 	/*
-	 * method:实现输出3/4级别的风险方法
+	 * method:添加jar包path
 	 * author:wangchao
 	 * time:2018-9-23 13:30:09
 	 */
-	private Element PrintRiskMethod(Conflict conflict) {
+	private Element AddPath(Conflict conflict) {
 		Element elements = new DefaultElement("versions");
 		//冲突的jar包
 		ConflictJRisk conflictJRisk = conflict.getJRisk();
 		for(DepJarJRisk jarRisk : conflictJRisk.getJarRisks()) {
-			
 			Element element = new DefaultElement("version");
 			elements.add(element);
 			element.addAttribute("versionId", jarRisk.getVersion());
 			element.addAttribute("loaded", "" + jarRisk.getConflictJar().isSelected());
-//			element.addAttribute("methodName", record.getRiskMthd().toString().replace("<", "").replace(">", ""));
 			Element path = new DefaultElement("path");
 			element.add(path);
 			path.addText(jarRisk.getConflictJar().getAllDepPath());
-					
-			Graph4distance distanceGraph = jarRisk.getGraph4distance();
-
-			Graph4path pathGraph = distanceGraph.getGraph4path();
-			if (distanceGraph.getAllNode().isEmpty()) {
-				
-			}
-			else {
-				//element.addAttribute("distance", distanceGraph);
-			}
-			if (pathGraph.getAllNode().isEmpty()) {
-				
-			}
-			else {
-				
-//				Set<String> hostNodes = pathGraph.getHostNds();
-//				Map<String, IBook> books = new Dog(pathGraph).findRlt(hostNodes, Conf.DOG_DEP_FOR_PATH,
-//						Strategy.NOT_RESET_BOOK);
-//				for (String topMthd : books.keySet()) {
-//					if (hostNodes.contains(topMthd)) {
-//						Book4path book = (Book4path) books.get(topMthd);
-//						//DepJar usedJar =  conflict.getUsedDepJar();
-//						for (IRecord iRecord : book.getRecords()) {
-////							Element element = new DefaultElement("version");
-//							elements.add(element);
-//							Record4path record = (Record4path) iRecord;
-////							element.addAttribute("conflict",jarRisk.getVersion() + conflict.toString() + conflict.getUsedDepJar().getVersion());
-////							element.addAttribute("record", record.toString());
-//							element.addAttribute("versionId", jarRisk.getVersion());
-//							element.addAttribute("loaded", "" + jarRisk.getConflictJar().isSelected());
-////							element.addAttribute("methodName", record.getRiskMthd().toString().replace("<", "").replace(">", ""));
-////							Element path = new DefaultElement("path");
-//							element.add(path);
-//							path.addText(record.getPathStr().toString().replace("<", "").replace(">", ""));
-//							
-////							
-//							//usedJar错误的jar包
-//							//usedJar.getOutMthds(record.get)
-//							
-//							//dis2records.add(record.getPathlen(), record);
-//						}
-//					}
-//				}
-			}
 		}
 		return elements;
 	}

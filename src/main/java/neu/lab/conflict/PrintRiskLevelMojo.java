@@ -8,7 +8,7 @@ import neu.lab.conflict.writer.RiskLevelWriter;
 @Mojo(name = "printRiskLevel", defaultPhase = LifecyclePhase.VALIDATE)
 public class PrintRiskLevelMojo extends ConflictMojo {
 
-	@Override//
+	@Override
 	public void run() {
 		// TODO Auto-generated method stub
 		RiskLevelWriter riskLevelWriter = new RiskLevelWriter();

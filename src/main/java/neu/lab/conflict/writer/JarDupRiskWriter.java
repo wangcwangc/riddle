@@ -8,6 +8,7 @@ import java.io.PrintWriter;
 import neu.lab.conflict.container.Conflicts;
 import neu.lab.conflict.util.MavenUtil;
 import neu.lab.conflict.vo.DepJar;
+import neu.lab.conflict.vo.NodeAdapter;
 import neu.lab.conflict.vo.Conflict;
 
 public class JarDupRiskWriter {
@@ -16,9 +17,15 @@ public class JarDupRiskWriter {
 		try {
 			PrintWriter printer = new PrintWriter(new BufferedWriter(new FileWriter(new File(outPath), true)));
 			printer.println("===============projectPath->" + MavenUtil.i().getProjectInfo());
+			//System.out.println("this is my debug3 ");
 			for (Conflict nodeConflict : Conflicts.i().getConflicts()) {
-
+				//System.out.println("this is my debug2 " + Conflicts.i().getConflicts().size() + nodeConflict.getNodeAdapters().size());
+				//for (  NodeAdapter a : nodeConflict.getNodeAdapters()) {
+					//System.out.println(a.toString());
+				//}
+				// 有疑问，此处会存入2个一模一样的nodeadapter
 				if (nodeConflict.getNodeAdapters().size() == 2) {// only two version
+					System.out.println("this is my debug ");
 					DepJar[] depJars = nodeConflict.getDepJars().toArray(new DepJar[2]);
 					DepJar depJar1 = depJars[0];
 					DepJar depJar2 = depJars[1];

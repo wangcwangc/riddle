@@ -45,14 +45,14 @@ public class NodeAdapter {
 		try {
 			if (!isInnerProject()) {// inner project is target/classes
 				if (null == node.getPremanagedVersion()) {
-					// artifact version of node is the version declared in pom.
+					// artifact version of node is the version declared in pom.	节点的构件版本是POM中声明的版本。
 					if (!node.getArtifact().isResolved())
 						MavenUtil.i().resolve(node.getArtifact());
 				} else {
 					Artifact artifact = MavenUtil.i().getArtifact(getGroupId(), getArtifactId(), getVersion(),
 							getType(), getClassifier(), getScope());
 					if (!artifact.isResolved())
-						MavenUtil.i().resolve(artifact);
+						MavenUtil.i().resolve(artifact);	//解析这个构件
 				}
 			}
 		} catch (ArtifactResolutionException e) {
@@ -84,7 +84,7 @@ public class NodeAdapter {
 
 	/**
 	 * version changes because of dependency management
-	 * 
+	 * 被dependency management更改过版本
 	 * @return
 	 */
 	public boolean isVersionChanged() {
@@ -100,8 +100,8 @@ public class NodeAdapter {
 	}
 
 	/**
-	 * used version is select from this node,if version was from mangement ,this node will return false.
-	 * 
+	 * used version is select from this node,if version was from management ,this node will return false.
+	 * 这个版本的node是否被使用，如果被management更改过版本，将返回false
 	 * @return
 	 */
 	public boolean isNodeSelected() {
@@ -123,6 +123,11 @@ public class NodeAdapter {
 		return node.getArtifact().getVersion();
 	}
 
+	/**
+	 * abandon
+	 * @param jarRiskAna
+	 * @return
+	 */
 	public NodeNRisk getNodeRiskAna(DepJarNRisk jarRiskAna) {
 		return new NodeNRisk(this, jarRiskAna);
 	}
@@ -130,7 +135,7 @@ public class NodeAdapter {
 	/**
 	 * @param includeSelf
 	 *            :whether includes self
-	 * @return ancestors(from down to top) 
+	 * @return ancestors(from down to top) 从下至上
 	 */
 	public LinkedList<NodeAdapter> getAncestors(boolean includeSelf) {
 		LinkedList<NodeAdapter> ancestors = new LinkedList<NodeAdapter>();
@@ -143,7 +148,11 @@ public class NodeAdapter {
 		}
 		return ancestors;
 	}
-	
+	/**
+	 * jarClasspaths
+	 * @param includeSelf
+	 * @return
+	 */
 	public Collection<String> getAncestorJarCps(boolean includeSelf){
 		List<String> jarCps = new ArrayList<String>();
 		if (includeSelf)
@@ -156,12 +165,20 @@ public class NodeAdapter {
 		return jarCps;
 	}
 
+	/**
+	 * 得到父节点
+	 * @return
+	 */
 	public NodeAdapter getParent() {
 		if (null == node.getParent())
 			return null;
 		return NodeAdapters.i().getNodeAdapter(node.getParent());
 	}
 
+	/**
+	 * 得到文件路径
+	 * @return
+	 */
 	public List<String> getFilePath() {
 		if (filePaths == null) {
 			filePaths = new ArrayList<String>();

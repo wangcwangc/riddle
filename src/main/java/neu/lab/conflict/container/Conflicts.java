@@ -32,17 +32,18 @@ public class Conflicts {
 				addNodeAdapter(node);
 		}
 
-		// delete conflict if there is only one version
+		// delete conflict if there is only one version 如果只有一个版本就删除冲突
 		Iterator<Conflict> ite = container.iterator();
 		while (ite.hasNext()) {
 			Conflict conflict = ite.next();
-			if (!conflict.isConflict()||!wantCal( conflict)) {
+			if (!conflict.isConflict()||!wantCal(conflict)) {	//如果这个方法不是冲突
 				ite.remove();
 			}
 		}
 	}
 	
 	/**this method use to debug.
+	 * 
 	 * @param conflict
 	 * @return
 	 */
@@ -64,6 +65,14 @@ public class Conflicts {
 		return container;
 	}
 
+	/**
+	 * 如果容器中已经存在一个conflict和本nodeAdapter是相同的构件
+	 * 则为这个conflict添加本节点适配器
+	 * 如果容器中不存在
+	 * 则本nodeAdapter作为一个conflict加入容器
+	 * 然后为这个conflict加入本节点
+	 * @param nodeAdapter
+	 */
 	private void addNodeAdapter(NodeAdapter nodeAdapter) {
 		Conflict conflict = null;
 		for (Conflict existConflict : container) {

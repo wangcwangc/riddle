@@ -7,6 +7,11 @@ import javassist.ClassPool;
 import neu.lab.conflict.GlobalVar;
 import neu.lab.conflict.util.MavenUtil;
 
+/**
+ * 所有被引用的cls
+ * @author wangchao
+ *
+ */
 public class AllRefedCls {
 	private static AllRefedCls instance;
 	private Set<String> refedClses;

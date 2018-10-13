@@ -91,6 +91,7 @@ public abstract class ConflictMojo extends AbstractMojo {
 
 	public long systemFileSize = 0;//byte
 
+	//初始化全局变量
 	protected void initGlobalVar() throws Exception {
 
 		MavenUtil.i().setMojo(this);
@@ -102,13 +103,17 @@ public abstract class ConflictMojo extends AbstractMojo {
 		GlobalVar.useAllJar = useAllJar;
 		ShellConfig.mvnRep = MavenUtil.i().getMvnRep();
 
+		//初始化NodeAdapters
 		NodeAdapters.init(root);
+		//初始化DepJars
 		DepJars.init(NodeAdapters.i());// occur jar in tree
 
 		validateSysSize();
 
+		//初始化所有的类集合
 		AllCls.init(DepJars.i());
-		Conflicts.init(NodeAdapters.i());// version conflict in tree
+		
+		Conflicts.init(NodeAdapters.i());// version conflict in tree	初始化树中的版本冲突
 	}
 
 	private void validateSysSize() throws Exception {
@@ -134,7 +139,7 @@ public abstract class ConflictMojo extends AbstractMojo {
 	public void execute() throws MojoExecutionException {
 		this.getLog().info("method detect start:");
 		long startTime = System.currentTimeMillis();
-		String pckType = project.getPackaging();
+		String pckType = project.getPackaging();	//得到项目的打包类型
 		if ("jar".equals(pckType) || "war".equals(pckType) || "maven-plugin".equals(pckType)
 				|| "bundle".equals(pckType)) {
 			try {

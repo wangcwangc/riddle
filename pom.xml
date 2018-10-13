@@ -1,4 +1,5 @@
-<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
 	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
 	<modelVersion>4.0.0</modelVersion>
 	<groupId>neu.lab</groupId>
@@ -7,7 +8,7 @@
 	<packaging>maven-plugin</packaging>
 
 	<name>conflict Maven Plugin</name>
-	<!-- 测试mac  -->
+	<!-- 测试mac -->
 	<!-- FIXME change it to the project's website -->
 	<url>http://maven.apache.org</url>
 
@@ -64,16 +65,9 @@
 			<version>3.18.2-GA</version>
 		</dependency>
 
-<!-- 		<dependency>
-			<groupId>org.ow2.asm</groupId>
-			<artifactId>asm</artifactId>
-			<version>6.0</version>
-		</dependency>
-		<dependency>
-			<groupId>org.ow2.asm</groupId>
-			<artifactId>asm-util</artifactId>
-			<version>6.0</version>
-		</dependency> -->
+		<!-- <dependency> <groupId>org.ow2.asm</groupId> <artifactId>asm</artifactId> 
+			<version>6.0</version> </dependency> <dependency> <groupId>org.ow2.asm</groupId> 
+			<artifactId>asm-util</artifactId> <version>6.0</version> </dependency> -->
 
 		<dependency>
 			<groupId>org.apache.commons</groupId>
@@ -121,6 +115,13 @@
 						</goals>
 					</execution>
 				</executions>
+			</plugin>
+			<plugin><!-- skip test -->
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-surefire-plugin</artifactId>
+				<configuration>
+					<skip>true</skip>
+				</configuration>
 			</plugin>
 			<!-- <plugin> <groupId>org.apache.maven.plugins</groupId> <artifactId>maven-invoker-plugin</artifactId> 
 				<version>1.7</version> <configuration> <debug>true</debug> <projectsDirectory>d://testcase</projectsDirectory> 

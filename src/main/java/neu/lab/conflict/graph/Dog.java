@@ -12,6 +12,7 @@ import java.util.TreeSet;
 import neu.lab.conflict.GlobalVar;
 import neu.lab.conflict.util.DebugUtil;
 import neu.lab.conflict.util.MavenUtil;
+import neu.lab.conflict.util.UserConf;
 
 public class Dog {
 	public enum Strategy {
@@ -40,6 +41,7 @@ public class Dog {
 		return graph.getNode(nodeName).getBook();
 	}
 
+	//此时的输入方法集合是host方法集合
 	public Map<String, IBook> findRlt(Collection<String> entrys, int maxDep, Dog.Strategy strategyType) {
 		//		maxDep = Integer.MAX_VALUE;
 		MavenUtil.i().getLog().info("dog starts running with depth " + maxDep);
@@ -76,7 +78,7 @@ public class Dog {
 	}
 
 	private Map<String, IBook> findRlt1(Collection<String> entrys, int maxDep) {
-		MavenUtil.i().getLog().info("dog won't reset doneBook.");
+		MavenUtil.i().getLog().info("dog won't reset doneBook.");//不重置已完成的book
 		books = new HashMap<String, IBook>();
 		long start = System.currentTimeMillis();
 		for (String mthd : entrys) {
@@ -162,7 +164,7 @@ public class Dog {
 	 */
 	private void forward(String frontNode) {
 		//TODO debug dog
-		DebugUtil.print("d:\\Decca\\dogTrace.txt", frontNode + " " + route.size());
+		DebugUtil.print(UserConf.getOutDir4Mac() + "tdogTrace.txt", frontNode + " " + route.size());
 		// System.out.println("forward to " + frontNode);
 		INode node = graph.getNode(frontNode);
 		if (node != null) {

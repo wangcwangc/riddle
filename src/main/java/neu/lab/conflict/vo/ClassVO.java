@@ -3,10 +3,15 @@ package neu.lab.conflict.vo;
 import java.util.HashSet;
 import java.util.Set;
 
+/**
+ * 每个jar包中的类VO
+ * @author wangchao
+ *
+ */
 public class ClassVO {
-	private String clsSig;
+	private String clsSig;//类标记
 	private Set<MethodVO> mthds;// methods in class
-	private DepJar depJar;
+	private DepJar depJar;//所属的jar
 
 	public ClassVO(String clsSig) {
 		this.clsSig = clsSig;
@@ -27,7 +32,7 @@ public class ClassVO {
 
 	/**
 	 * if contains method called mthdSig(may not same method object)
-	 * 
+	 * 是否包含相同方法（可能不是同一个对象）
 	 * @param mthdSig
 	 * @return
 	 */
@@ -39,6 +44,9 @@ public class ClassVO {
 		return false;
 	}
 
+	/**
+	 * 是否是同一个类
+	 */
 	@Override
 	public boolean equals(Object obj) {
 		if (obj instanceof ClassVO) {

@@ -12,7 +12,11 @@ public class ClassDupRiskMojo extends ConflictMojo{
 
 	@Override
 	public void run() {
-		new ClassDupRiskWriter().writeByJar(UserConf.getOutDir() + "classDupByJar.txt");		
+		//abandon
+		//win下运行此Mojo
+		//new ClassDupRiskWriter().writeByJar(UserConf.getOutDir() + "classDupByJar.txt");
+		//mac下测试此Mojo
+		new ClassDupRiskWriter().writeByJar(UserConf.getOutDir4Mac() + "classDupByJar.txt");
 	}
 
 }

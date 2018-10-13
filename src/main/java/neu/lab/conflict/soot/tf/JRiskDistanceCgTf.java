@@ -28,31 +28,34 @@ public class JRiskDistanceCgTf extends JRiskCgTf {
 		super(depJarJRisk);
 	}
 
+	/**
+	 * 产生图，其中不包含JavaLib的方法，同时不包含conflictJar的方法
+	 */
 	protected void formGraph() {
 		if (graph == null) {
 			MavenUtil.i().getLog().info("start form graph...");
 			// get call-graph.
 			Map<String, Node4distance> name2node = new HashMap<String, Node4distance>();
 			List<MethodCall> mthdRlts = new ArrayList<MethodCall>();
-			CallGraph cg = Scene.v().getCallGraph();
-			Iterator<Edge> ite = cg.iterator();
+			CallGraph cg = Scene.v().getCallGraph();//得到图
+			Iterator<Edge> ite = cg.iterator();//得到边集合
 			while (ite.hasNext()) {
 				Edge edge = ite.next();
 
-				String srcMthdName = edge.src().getSignature();
-				String tgtMthdName = edge.tgt().getSignature();
+				String srcMthdName = edge.src().getSignature();//源方法名
+				String tgtMthdName = edge.tgt().getSignature();//目标方法名
 				// //TODO1
 				// if("<com.fasterxml.jackson.core.JsonFactory: boolean
 				// requiresPropertyOrdering()>".equals(tgtMthdName)) {
 				// MavenUtil.i().getLog().info("srcMthdName:"+srcMthdName);
 				// }
-				String srcClsName = edge.src().getDeclaringClass().getName();
-				String tgtClsName = edge.tgt().getDeclaringClass().getName();
+				String srcClsName = edge.src().getDeclaringClass().getName();//源方法的类名
+				String tgtClsName = edge.tgt().getDeclaringClass().getName();//目标方法的类名
 				if (edge.src().isJavaLibraryMethod() || edge.tgt().isJavaLibraryMethod()) {
-					// filter relation contains javaLibClass
+					// filter relation contains javaLibClass 过滤掉JavaLib的类
 				} else if (conflictJarClses.contains(SootUtil.mthdSig2cls(srcMthdName))
 						&& conflictJarClses.contains(SootUtil.mthdSig2cls(tgtMthdName))) {
-					// filter relation inside conflictJar
+					// filter relation inside conflictJar 过滤掉conflictJar中的类
 				} else {
 					if (!name2node.containsKey(srcMthdName)) {
 						name2node.put(srcMthdName, new Node4distance(srcMthdName, isHostClass(srcClsName)&&!edge.src().isPrivate(),

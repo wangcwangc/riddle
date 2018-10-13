@@ -34,7 +34,12 @@ import neu.lab.conflict.vo.NodeAdapter;
 
 public class RiskLevelWriter {
 
-	public void writeRiskLevel(String outPath, boolean append) {
+	/**
+	 * 输出到XML中
+	 * @param outPath
+	 * @param append
+	 */
+	public void writeRiskLevelXML(String outPath, boolean append) {
 		try {
 			Writer fileWriter;
 			if (outPath == null) {
@@ -71,6 +76,7 @@ public class RiskLevelWriter {
 		element.addAttribute("groupId-artifactId", conflict.getSig());
 		element.addAttribute("versions", conflict.getVersions().toString());
 		ConflictJRisk conflictJRisk = conflict.getJRisk();
+		conflictJRisk.getRiskLevel();
 		int riskLevel = conflictJRisk.getRiskLevel();
 		element.addAttribute("riskLevel", riskLevel + "");
 		

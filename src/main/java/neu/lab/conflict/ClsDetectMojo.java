@@ -14,7 +14,7 @@ import neu.lab.conflict.writer.ClassDupRiskWriter;
 public class ClsDetectMojo extends ConflictMojo{
 	@Override
 	public void run() {
-
+		// abandon
 		// new RiskPathWriter().write(Conf.outDir + "detect.txt");
 		if (Conf.ANA_FROM_HOST&&!MavenUtil.i().getBuildDir().exists()) {
 			getLog().warn(MavenUtil.i().getProjectInfo()+" dont't have target!  skip");

@@ -25,6 +25,10 @@ public class Conflict {
 		this.artifactId = artifactId;
 	}
 
+	/**
+	 * 得到使用的DepJar
+	 * @return
+	 */
 	public DepJar getUsedDepJar() {
 		if (null == usedDepJar) {
 			for (DepJar depJar : depJars) {
@@ -39,11 +43,35 @@ public class Conflict {
 		return usedDepJar;
 
 	}
+	
+	/**
+	 * 得到除了被选中的jar以外的其他被依赖的jar包
+	 * @return
+	 */
+	public Set<DepJar> getOtherDepJar4Use() {
+		Set<DepJar> usedDepJars = new HashSet<DepJar>();
+		for (DepJar depJar : depJars) {
+			System.out.println("conflict.getotherdepjar4use" + depJar.toString());
+			if (depJar.isSelected()) {
+				
+			}
+			else {
+				usedDepJars.add(depJar);
+			}
+		}
+		return usedDepJars;
+	}
 
 	public void addNode(NodeAdapter nodeAdapter) {
 		nodes.add(nodeAdapter);
 	}
 
+	/**
+	 * 同一个构件
+	 * @param groupId2
+	 * @param artifactId2
+	 * @return
+	 */
 	public boolean sameArtifact(String groupId2, String artifactId2) {
 		return groupId.equals(groupId2) && artifactId.equals(artifactId2);
 	}
@@ -66,6 +94,7 @@ public class Conflict {
 		return getDepJars().size() > 1;
 	}
 
+	//abandon
 	public ConflictNRisk getNRisk() {
 		// if(riskAna==null) {
 		// riskAna = ConflictRiskAna.getConflictRiskAna(this);
@@ -74,6 +103,7 @@ public class Conflict {
 		return new ConflictNRisk(this);
 	}
 	
+	//abandon
 	public ConflictRRisk getRefRisk() {
 		return new ConflictRRisk(this);
 	}

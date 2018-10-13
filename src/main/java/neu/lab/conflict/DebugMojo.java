@@ -16,7 +16,7 @@ import neu.lab.conflict.vo.NodeAdapter;
 import neu.lab.conflict.writer.DistanceWriter;
 import neu.lab.conflict.writer.JarRiskWriter;
 import neu.lab.conflict.writer.RiskPathWriter;
-
+	// abandon
 @Mojo(name = "debug", defaultPhase = LifecyclePhase.VALIDATE)
 public class DebugMojo extends ConflictMojo {
 

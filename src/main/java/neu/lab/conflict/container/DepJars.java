@@ -57,6 +57,7 @@ public class DepJars {
 					hostDepJar = depJar;
 				}
 			}
+			MavenUtil.i().getLog().warn("depjar host is " + hostDepJar.toString()); //测试输出
 		}
 		return hostDepJar;
 	}
@@ -91,21 +92,21 @@ public class DepJars {
 		}
 		return usedJarPaths;
 	}
-	
+
 	/**
 	 * @return path1;path2;path3
 	 */
 	public String getUsedJarPathsStr() {
 		Set<String> usedJarPath = new LinkedHashSet<String>();
 		StringBuilder sb = new StringBuilder();
-		for(String path:getUsedJarPaths()) {
-			sb.append(path+File.pathSeparator);
+		for (String path : getUsedJarPaths()) {
+			sb.append(path + File.pathSeparator);
 		}
 		String paths = sb.toString();
-		paths = paths.substring(0,paths.length()-1);//delete last ;
+		paths = paths.substring(0, paths.length() - 1);// delete last ;
 		return paths;
 	}
-	
+
 	/**
 	 * @param cls
 	 * @return usedDepJar that has class.
@@ -113,7 +114,7 @@ public class DepJars {
 	public DepJar getClassJar(String cls) {
 		for (DepJar depJar : DepJars.i().getAllDepJar()) {
 			if (depJar.isSelected()) {
-				if(depJar.containsCls(cls))
+				if (depJar.containsCls(cls))
 					return depJar;
 			}
 		}

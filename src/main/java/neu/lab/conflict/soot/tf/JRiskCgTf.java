@@ -14,16 +14,16 @@ import soot.jimple.toolkits.callgraph.CHATransformer;
 
 /**
  * to get call-graph.
- * 
+ * 得到call-graph
  * @author asus
  *
  */
 public abstract class JRiskCgTf extends SceneTransformer {
 
 	// private DepJarJRisk depJarJRisk;
-	protected Set<String> entryClses;
-	protected Set<String> conflictJarClses;
-	protected Set<String> riskMthds;
+	protected Set<String> entryClses;	//入口类集合
+	protected Set<String> conflictJarClses;		//冲突jar类集合
+	protected Set<String> riskMthds;	//风险方法集合
 	protected Set<String> rchMthds;
 	protected IGraph graph;
 	protected Map<String, Integer> mthd2branch;

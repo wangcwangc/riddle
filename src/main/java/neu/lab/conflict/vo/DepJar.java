@@ -49,16 +49,19 @@ public class DepJar {
 	}
 
 	/**
-	 * get jar may have risk thinking same class in different dependency,selected
-	 * jar may have risk; Not thinking same class in different dependency,selected
-	 * jar is safe
+	 * get jar may have risk thinking same class in different dependency,selected jar may have risk; 
+	 * Not thinking same class in different dependency,selected jar is safe
 	 * 
 	 * @return
 	 */
 	public boolean isRisk() {
 		return !this.isSelected();
 	}
-
+	
+	/**
+	 *	all class in jar中是不是包含某一class 
+	 *
+	 */
 	public boolean containsCls(String clsSig) {
 		return this.getClsTb().containsKey(clsSig);
 	}
@@ -150,6 +153,10 @@ public class DepJar {
 		return false;
 	}
 
+	/**
+	 * 得到这个jar所有类的集合
+	 * @return
+	 */
 	public Map<String, ClassVO> getClsTb() {
 		if (clsTb == null) {
 			if (null == this.getJarFilePaths(true)) {
@@ -173,6 +180,10 @@ public class DepJar {
 		return getClsTb().get(clsSig);
 	}
 
+	/**
+	 * 得到这个jar的所有方法
+	 * @return
+	 */
 	public Set<String> getAllMthd() {
 		if (allMthd == null) {
 			allMthd = new HashSet<String>();
@@ -188,7 +199,12 @@ public class DepJar {
 	public boolean containsMthd(String mthd) {
 		return getAllMthd().contains(mthd);
 	}
-
+	
+	/**
+	 * 得到本depjar独有的cls
+	 * @param otherJar
+	 * @return
+	 */
 	public Set<String> getOnlyClses(DepJar otherJar) {
 		Set<String> onlyCls = new HashSet<String>();
 		Set<String> otherAll = otherJar.getAllCls(true);
@@ -199,7 +215,12 @@ public class DepJar {
 		}
 		return onlyCls;
 	}
-
+	
+	/**
+	 * 得到本depjar独有的mthds
+	 * @param otherJar
+	 * @return
+	 */
 	public Set<String> getOnlyMthds(DepJar otherJar) {
 		Set<String> onlyMthds = new HashSet<String>();
 		for (String clsSig : getClsTb().keySet()) {
@@ -263,10 +284,19 @@ public class DepJar {
 				&& classifier.equals(classifier2);
 	}
 
+	/**
+	 * 是否为同一个
+	 * @param dep
+	 * @return
+	 */
 	public boolean isSelf(DepJar dep) {
 		return isSame(dep.getGroupId(), dep.getArtifactId(), dep.getVersion(), dep.getClassifier());
 	}
-
+/**
+ * 没有比较版本
+ * @param depJar
+ * @return
+ */
 	public boolean isSameLib(DepJar depJar) {
 		return getGroupId().equals(depJar.getGroupId()) && getArtifactId().equals(depJar.getArtifactId());
 	}
@@ -278,7 +308,12 @@ public class DepJar {
 	public boolean hasClsTb() {
 		return null != this.clsTb;
 	}
-
+	
+	/**
+	 * 得到testMthds中哪些mthds存在于本jar
+	 * @param testMthds
+	 * @return
+	 */
 	public List<String> getInnerMthds(Collection<String> testMthds) {
 		Set<String> jarMthds = getAllMthd();
 		List<String> innerMthds = new ArrayList<String>();
@@ -300,12 +335,12 @@ public class DepJar {
 		Set<String> riskMthds = new HashSet<String>();
 		for (String testMthd : testMthds) {
 			if (!this.containsMthd(testMthd) && AllRefedCls.i().contains(SootUtil.mthdSig2cls(testMthd))) {
-				// don't have method,and class is used.
+				// don't have method,and class is used. 使用这个类，但是没有方法
 				if (this.containsCls(SootUtil.mthdSig2cls(testMthd))) {
-					// has class.don't have method.
+					// has class.don't have method.	有这个类，没有方法
 					riskMthds.add(testMthd);
 				} else if (!AllCls.i().contains(SootUtil.mthdSig2cls(testMthd))) {
-					// This jar don't have class,and all jar don't have class.
+					// This jar don't have class,and all jar don't have class.	这个jar没有这个class，所有的jar都没有
 					riskMthds.add(testMthd);
 				}
 			}
@@ -313,7 +348,11 @@ public class DepJar {
 		// if (diffMthd.contains("<init>") || diffMthd.contains("<clinit>")) {
 		return riskMthds;
 	}
-	
+	/**
+	 * 暂时不明白用途
+	 * @param usedJar
+	 * @return
+	 */
 	public Set<String> getThrownMthds(DepJar usedJar) {
 		Set<String> thrownMthds = new HashSet<String>();
 		Set<String> usedMthds = new HashSet<String>();
@@ -404,9 +443,9 @@ public class DepJar {
 		Graph4ClsRef graph = new Graph4ClsRef();
 		try {
 			ClassPool pool = new ClassPool();
-			Set<String> allSysCls = new HashSet<String>();
+			Set<String> allSysCls = new HashSet<String>();		//all system classes
 			for (DepJar jar : DepJars.i().getAllDepJar()) {
-				if (jar == this || (jar.isSelected() && !jar.isSameLib(this))) {
+				if (jar == this || (jar.isSelected() && !jar.isSameLib(this))) {	//jar和本jar相等，或者(jar被选中且和本jar不是相同lib版本)
 					for (String path : jar.getJarFilePaths(true)) {
 						pool.appendClassPath(path);
 					}
@@ -417,7 +456,7 @@ public class DepJar {
 				}
 			}
 			for (String sysCls : allSysCls) {// each er
-				for (Object ee : pool.get(sysCls).getRefClasses()) {
+				for (Object ee : pool.get(sysCls).getRefClasses()) {	//返回此类中引用的所有类的名称的集合。该集合包括此类的名称。
 					if (!sysCls.equals(ee)) {// don't add relation of self.
 						Node4ClsRef node = (Node4ClsRef) graph.getNode((String) ee);
 						if (node != null)
@@ -435,7 +474,7 @@ public class DepJar {
 	/**
 	 * use this jar replace version of used-version ,then return path of
 	 * all-used-jar
-	 * 
+	 * 使用这个jar替代了旧版本，然后返回所有的旧jar的路径
 	 * @return
 	 * @throws Exception
 	 */
@@ -446,7 +485,7 @@ public class DepJar {
 		for (DepJar usedDepJar : DepJars.i().getUsedDepJars()) {
 			if (this.isSameLib(usedDepJar)) {// used depJar instead of usedDepJar.
 				if (hasRepalce) {
-					MavenUtil.i().getLog().warn("when cg, find multiple usedLib for " + toString());
+					MavenUtil.i().getLog().warn("when cg, find multiple usedLib for " + toString());	//有重复的使用路径
 					throw new Exception("when cg, find multiple usedLib for " + toString());
 				}
 				hasRepalce = true;

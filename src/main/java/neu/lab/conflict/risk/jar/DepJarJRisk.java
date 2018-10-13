@@ -30,14 +30,22 @@ import neu.lab.conflict.util.MavenUtil;
 import neu.lab.conflict.vo.DepJar;
 import neu.lab.conflict.vo.MethodCall;
 
+/**
+ * 依赖风险jar
+ * @author wangchao
+ *
+ */
 public class DepJarJRisk {
-	private DepJar depJar;
-	private ConflictJRisk conflictRisk;
-	private Set<String> thrownMthds;
+	private DepJar depJar;	//依赖jar
+	private ConflictJRisk conflictRisk;		//有风险的冲突jar
+	private Set<String> thrownMthds;		//抛弃的方法
 	// private Set<String> rchedMthds;
-	private Graph4distance graph4distance;
-	private Map<String, IBook> books;
+	private Graph4distance graph4distance;		//图
+	private Map<String, IBook> books;			//book记录用
 
+	/*
+	 * 构造函数
+	 */
 	public DepJarJRisk(DepJar depJar, ConflictJRisk conflictRisk) {
 		this.depJar = depJar;
 		this.conflictRisk = conflictRisk;
@@ -47,6 +55,9 @@ public class DepJarJRisk {
  
 	}
 
+	/*
+	 * 得到版本
+	 */
 	public String getVersion() {
 		return depJar.getVersion();
 	}
@@ -147,13 +158,21 @@ public class DepJarJRisk {
 		return depJar;
 	}
 
+	/**
+	 * 得到距离图
+	 * @return
+	 */
 	public Graph4distance getGraph4distance() {
 		if (graph4distance == null) {
 			if (getThrownMthds().size() > 0) {
 //				for(String riskMthd:getThrownMthds()) {
 //					System.out.println(riskMthd);
 //				}
-				MavenUtil.i().getLog().info("first riskmthd:" + getThrownMthds().iterator().next());
+				for (String mthd : getThrownMthds()) {
+					MavenUtil.i().getLog().info("first riskmthd:" + mthd);
+					//测试
+				}
+				//MavenUtil.i().getLog().info("first riskmthd:" + getThrownMthds().iterator().next());
 				IGraph iGraph = SootJRiskCg.i().getGraph4distance(this,new JRiskDistanceCgTf(this));
 				if (iGraph != null) {
 					graph4distance = (Graph4distance) iGraph;

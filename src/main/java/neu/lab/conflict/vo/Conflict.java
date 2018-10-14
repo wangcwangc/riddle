@@ -45,6 +45,13 @@ public class Conflict {
 	}
 	
 	/**
+	 * 设置usedDepJar
+	 */
+	public void setUsedDepJar(DepJar depJar) {
+		usedDepJar = depJar;
+	}
+	
+	/**
 	 * 得到除了被选中的jar以外的其他被依赖的jar包
 	 * @return
 	 */
@@ -53,7 +60,7 @@ public class Conflict {
 		for (DepJar depJar : depJars) {
 			System.out.println("conflict.getotherdepjar4use" + depJar.toString());
 			if (depJar.isSelected()) {
-				
+				System.out.println("select depJar" + depJar.toString());
 			}
 			else {
 				usedDepJars.add(depJar);

@@ -10,6 +10,7 @@ import neu.lab.conflict.GlobalVar;
 import neu.lab.conflict.container.DepJars;
 import neu.lab.conflict.util.MavenUtil;
 import neu.lab.conflict.util.SootUtil;
+import neu.lab.conflict.vo.DepJar;
 import soot.PackManager;
 import soot.Scene;
 import soot.SceneTransformer;
@@ -33,6 +34,29 @@ public class SootRiskMthdFilter extends SootAna {
 			PackManager.v().getPack("wjtp").add(new Transform("wjtp.myTrans", transformer));
 
 			soot.Main.main(getArgs(DepJars.i().getUsedJarPaths().toArray(new String[0])).toArray(new String[0]));
+
+		} catch (Exception e) {
+			MavenUtil.i().getLog().warn("error when filter risk methods: ", e);
+
+		}
+		soot.G.reset();
+		long runtime = (System.currentTimeMillis() - start) / 1000;
+		GlobalVar.time2filterRiskMthd += runtime;
+	}
+	/**
+	 * 多态过滤方法1
+	 * @param mthds2test
+	 * @param depJar
+	 */
+	public void filterRiskMthds(Collection<String> mthds2test, DepJar depJar) {
+		long start = System.currentTimeMillis();
+		try {
+			SootUtil.modifyLogOut();
+
+			RiskMthdFilterTf transformer = new RiskMthdFilterTf(mthds2test);
+			PackManager.v().getPack("wjtp").add(new Transform("wjtp.myTrans", transformer));
+
+			soot.Main.main(getArgs(DepJars.i().getUsedJarPaths(depJar).toArray(new String[0])).toArray(new String[0]));
 
 		} catch (Exception e) {
 			MavenUtil.i().getLog().warn("error when filter risk methods: ", e);

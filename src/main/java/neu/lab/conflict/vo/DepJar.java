@@ -195,7 +195,7 @@ public class DepJar {
 		}
 		return allMthd;
 	}
-
+	
 	public boolean containsMthd(String mthd) {
 		return getAllMthd().contains(mthd);
 	}
@@ -335,6 +335,23 @@ public class DepJar {
 		Set<String> riskMthds = new HashSet<String>();
 		for (String testMthd : testMthds) {
 			if (!this.containsMthd(testMthd) && AllRefedCls.i().contains(SootUtil.mthdSig2cls(testMthd))) {
+				// don't have method,and class is used. 使用这个类，但是没有方法
+				if (this.containsCls(SootUtil.mthdSig2cls(testMthd))) {
+					// has class.don't have method.	有这个类，没有方法
+					riskMthds.add(testMthd);
+				} else if (!AllCls.i().contains(SootUtil.mthdSig2cls(testMthd))) {
+					// This jar don't have class,and all jar don't have class.	这个jar没有这个class，所有的jar都没有
+					riskMthds.add(testMthd);
+				}
+			}
+		}
+		// if (diffMthd.contains("<init>") || diffMthd.contains("<clinit>")) {
+		return riskMthds;
+	}
+	public Set<String> getRiskMthds(Collection<String> testMthds, DepJar depJar) {
+		Set<String> riskMthds = new HashSet<String>();
+		for (String testMthd : testMthds) {
+			if (!this.containsMthd(testMthd) && AllRefedCls.i(depJar).contains(SootUtil.mthdSig2cls(testMthd))) {
 				// don't have method,and class is used. 使用这个类，但是没有方法
 				if (this.containsCls(SootUtil.mthdSig2cls(testMthd))) {
 					// has class.don't have method.	有这个类，没有方法

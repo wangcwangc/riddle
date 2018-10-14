@@ -62,9 +62,14 @@ public class DepJarJRisk {
 		return depJar.getVersion();
 	}
 
+	/**
+	 * 得到抛弃的方法
+	 * @return
+	 */
 	public Set<String> getThrownMthds() {
 		// "<neu.lab.plug.testcase.homemade.host.prob.ProbBottom: void m()>"
-		if (thrownMthds == null) {
+		
+		//if (thrownMthds == null) {
 
 			// //TODO1
 			// thrownMthds = new HashSet<String>();
@@ -72,7 +77,6 @@ public class DepJarJRisk {
 			// requiresPropertyOrdering()>");
 
 			thrownMthds = conflictRisk.getUsedDepJar().getRiskMthds(depJar.getAllMthd());
-
 			MavenUtil.i().getLog().info("riskMethod size before filter: " + thrownMthds.size());
 //			MavenUtil.i().getLog().info("contains : " + thrownMthds.contains("<com.fasterxml.jackson.databind.node.JsonNodeFactory: com.fasterxml.jackson.databind.node.NumericNode numberNode(java.math.BigInteger)>"));
 			if (thrownMthds.size() > 0)
@@ -92,10 +96,32 @@ public class DepJarJRisk {
 			// requiresPropertyOrdering()>");
 			// }
 
-		}
+		//}
 		return thrownMthds;
 	}
-
+	
+	/**
+	 * 用传入的depJar去得到抛弃的方法
+	 * @param depJar
+	 * @return
+	 */
+	public Set<String> getThrownMthds(DepJar enterDepJar){
+		thrownMthds = conflictRisk.getUsedDepJar().getRiskMthds(depJar.getAllMthd(), enterDepJar);
+		MavenUtil.i().getLog().info("riskMethod size before filter: " + thrownMthds.size());
+//		MavenUtil.i().getLog().info("contains : " + thrownMthds.contains("<com.fasterxml.jackson.databind.node.JsonNodeFactory: com.fasterxml.jackson.databind.node.NumericNode numberNode(java.math.BigInteger)>"));
+		if (thrownMthds.size() > 0)
+			new SootRiskMthdFilter().filterRiskMthds(thrownMthds, enterDepJar);
+		MavenUtil.i().getLog().info("riskMethod size after filter1: " + thrownMthds.size());
+//		MavenUtil.i().getLog().info("contains : " + thrownMthds.contains("<com.fasterxml.jackson.databind.node.JsonNodeFactory: com.fasterxml.jackson.databind.node.NumericNode numberNode(java.math.BigInteger)>"));
+		if (thrownMthds.size() > 0)
+			new SootRiskMthdFilter2().filterRiskMthds(this, thrownMthds);
+		MavenUtil.i().getLog().info("riskMethod size after filter2: " + thrownMthds.size());
+		MavenUtil.i().getLog().info("contains : " + thrownMthds.contains("<org.apache.http.impl.client.CloseableHttpClient: org.apache.http.client.methods.CloseableHttpResponse execute(org.apache.http.HttpHost,org.apache.http.HttpRequest,org.apache.http.protocol.HttpContext)>"));
+		MavenUtil.i().getLog().info("contains : " + thrownMthds.contains("<org.apache.http.impl.client.HttpClientBuilder: org.apache.http.impl.client.CloseableHttpClient build()>"));
+		return thrownMthds;
+	}
+	
+	
 	public MethodProbDistances getMethodProDistances() {
 		MethodProbDistances distances = new MethodProbDistances();
 		Map<String, IBook> books = getBooks4distance();

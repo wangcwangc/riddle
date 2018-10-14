@@ -55,6 +55,7 @@ public class RiskLevelWriter {
 			root.addAttribute("project",
 					MavenUtil.i().getProjectGroupId() + ":" + MavenUtil.i().getProjectArtifactId());
 			root.addAttribute("projectInfo", MavenUtil.i().getProjectInfo());
+			root.addAttribute("pomInfo", MavenUtil.i().getProjectPom());
 			for (Conflict conflict : Conflicts.i().getConflicts()) {
 				root.add(PrintRiskLevel(conflict));
 			}
@@ -76,7 +77,6 @@ public class RiskLevelWriter {
 		element.addAttribute("groupId-artifactId", conflict.getSig());
 		element.addAttribute("versions", conflict.getVersions().toString());
 		ConflictJRisk conflictJRisk = conflict.getJRisk();
-		conflictJRisk.getRiskLevel();
 		int riskLevel = conflictJRisk.getRiskLevel();
 		element.addAttribute("riskLevel", riskLevel + "");
 		

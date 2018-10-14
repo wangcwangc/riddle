@@ -94,6 +94,14 @@ public class MavenUtil {
 				+ mojo.project.getFile().getAbsolutePath();
 	}
 
+	/**
+	 * 得到项目pom.xml的位置
+	 * @return
+	 */
+	public String getProjectPom() {
+		return mojo.project.getFile().getAbsolutePath();
+	}
+	
 	public String getProjectCor() {
 		return mojo.project.getGroupId() + ":" + mojo.project.getArtifactId() + ":" + mojo.project.getVersion();
 	}

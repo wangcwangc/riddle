@@ -81,12 +81,38 @@ public class DepJars {
 				nodeAdapter.getClassifier());
 	}
 
+	/**
+	 * 此函数存在多态
+	 * @return
+	 */
 	public List<String> getUsedJarPaths() {
 		List<String> usedJarPaths = new ArrayList<String>();
 		for (DepJar depJar : DepJars.i().getAllDepJar()) {
 			if (depJar.isSelected()) {
 				for (String path : depJar.getJarFilePaths(true)) {
 					usedJarPaths.add(path);
+				}
+			}
+		}
+		return usedJarPaths;
+	}
+	/**
+	 * 
+	 * @param usedDepJar
+	 * @return
+	 */
+	public List<String> getUsedJarPaths(DepJar usedDepJar) {
+		List<String> usedJarPaths = new ArrayList<String>();
+		for (DepJar depJar : DepJars.i().getAllDepJar()) {
+			if (depJar.isSelected()) {
+				if (depJar.isSameLib(usedDepJar)) {
+					for (String path : usedDepJar.getJarFilePaths(true)) {
+						usedJarPaths.add(path);
+					}
+				} else {
+					for (String path : depJar.getJarFilePaths(true)) {
+						usedJarPaths.add(path);
+					}
 				}
 			}
 		}

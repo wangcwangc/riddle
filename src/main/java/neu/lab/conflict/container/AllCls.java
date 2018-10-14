@@ -20,6 +20,14 @@ public class AllCls {
 			instance = new AllCls(depJars);
 		}
 	}
+	/**
+	 * 初始化的时候用其他depJar
+	 * @param depJars
+	 * @param depJar
+	 */
+	public static void init(DepJars depJars, DepJar depJar) {
+			instance = new AllCls(depJars, depJar);
+	}
 	public static AllCls i() {
 		return instance;
 	}
@@ -34,7 +42,19 @@ public class AllCls {
 			}
 		}
 	}
-	
+	private AllCls(DepJars depJars, DepJar usedDepJar) {
+		clses = new HashSet<String>();
+		for (DepJar depJar : depJars.getAllDepJar()) {
+			if (depJar.isSelected()) {
+				//得到depJar中所有的类
+				if (depJar.isSameLib(usedDepJar)) {
+					clses.addAll(usedDepJar.getAllCls(true));
+				} else {
+					clses.addAll(depJar.getAllCls(true));
+				}
+			}
+		}
+	}
 	public Set<String> getAllCls() {
 		return clses;
 	}

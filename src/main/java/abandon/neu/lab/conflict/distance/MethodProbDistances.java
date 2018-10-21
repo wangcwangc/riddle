@@ -8,7 +8,7 @@ import neu.lab.conflict.util.SootUtil;
 
 public class MethodProbDistances extends NodeDistances {
 
-	protected Map<String, Map<String, Double>> b2t2prob;// <bottom,<top,probability>>
+	protected Map<String, Map<String, Double>> b2t2prob;// <bottom,<top,probability>>	<底,<顶,可能性>>
 
 	public MethodProbDistances() {
 		b2t2prob =  new HashMap<String, Map<String, Double>>();
@@ -29,6 +29,9 @@ public class MethodProbDistances extends NodeDistances {
 		}
 	}
 
+	/**
+	 * 是不是根节点
+	 */
 	@Override
 	public boolean isHostNode(String nodeName) {
 		return MavenUtil.i().isHostClass(SootUtil.mthdSig2cls(nodeName));
@@ -38,7 +41,7 @@ public class MethodProbDistances extends NodeDistances {
 	public String toString() {
 		StringBuilder sb = new StringBuilder();
 		for (String source : b2t2d.keySet()) {
-			Map<String, Double> t2dis = b2t2d .get(source);
+			Map<String, Double> t2dis = b2t2d.get(source);
 			Map<String, Double> t2prob = b2t2prob.get(source);
 			for (String target : t2prob.keySet()) {
 				sb.append(source + "," + target + "," +t2dis.get(target)  + "," + isHostNode(target) + ","
@@ -47,5 +50,19 @@ public class MethodProbDistances extends NodeDistances {
 			}
 		}
 		return sb.toString();
+	}
+	
+	public String toStringTest() {
+		StringBuilder sb = new StringBuilder();
+		for (String source : b2t2prob.keySet()) {
+			Map<String, Double> t2prob = b2t2prob.get(source);
+			for (String target : t2prob.keySet()) {
+				sb.append(source + "," + target + "," + "," + isHostNode(target) + ","
+						+t2prob.get(target) );
+				sb.append(System.lineSeparator());
+			}
+		}
+		return sb.toString();
+	
 	}
 }

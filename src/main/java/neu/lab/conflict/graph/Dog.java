@@ -41,7 +41,7 @@ public class Dog {
 		return graph.getNode(nodeName).getBook();
 	}
 
-	//此时的输入方法集合是host方法集合
+	
 	public Map<String, IBook> findRlt(Collection<String> entrys, int maxDep, Dog.Strategy strategyType) {
 		//		maxDep = Integer.MAX_VALUE;
 		MavenUtil.i().getLog().info("dog starts running with depth " + maxDep);

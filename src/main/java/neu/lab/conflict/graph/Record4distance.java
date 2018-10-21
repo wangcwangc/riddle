@@ -43,4 +43,9 @@ public class Record4distance extends IRecord {
 		}
 	}
 
+	@Override
+	public String toString() {
+		return "Record4distance [riskMthd=" + riskMthd + ", branch=" + branch + ", distance=" + distance + "]";
+	}
+
 }

@@ -7,8 +7,9 @@ import neu.lab.conflict.util.MavenUtil;
 
 public abstract class NodeDistances {
 
-	protected Map<String, Map<String, Double>> b2t2d;// <bottom,<top,distance>>
+	protected Map<String, Map<String, Double>> b2t2d;// <bottom,<top,distance>>		<底,<顶,距离>>
 
+	//构造函数
 	public NodeDistances() {
 		b2t2d = new HashMap<String, Map<String, Double>>();
 	}
@@ -20,10 +21,17 @@ public abstract class NodeDistances {
 	// return instance;
 	// }
 	
+	//是否为空
 	public boolean isEmpty() {
 		return b2t2d.isEmpty();
 	}
 
+	/**
+	 * 增加距离
+	 * @param bottom 底
+	 * @param top 顶
+	 * @param newDis 新距离
+	 */
 	public void addDistance(String bottom, String top, Double newDis) {
 		Map<String, Double> t2d = b2t2d.get(bottom);
 		if (t2d == null) {

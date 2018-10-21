@@ -108,9 +108,12 @@ public class TestCaseGenerator {
 				nds2remain.add(book.getNodeName());
 				for (IRecord iRecord : book.getRecords()) {
 					Record4distance record = (Record4distance) iRecord;
-					//MavenUtil.i().getLog().info("record name test :" + record.getName());
+					MavenUtil.i().getLog().info("record name test :" + record.getName());
 					nds2remain.add(record.getName());
 				}
+			}
+			for (String name : nds2remain) {
+				System.out.println("test" + name);
 			}
 			Graph4path pathGraph = distanceGraph.getGraph4path();
 			if (pathGraph.getAllNode().isEmpty()) {

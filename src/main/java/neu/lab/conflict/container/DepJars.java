@@ -105,15 +105,21 @@ public class DepJars {
 		List<String> usedJarPaths = new ArrayList<String>();
 		for (DepJar depJar : DepJars.i().getAllDepJar()) {
 			if (depJar.isSelected()) {
-				if (depJar.isSameLib(usedDepJar)) {
-					for (String path : usedDepJar.getJarFilePaths(true)) {
-						usedJarPaths.add(path);
-					}
-				} else {
+//				if (depJar.isSameLib(usedDepJar)) {
+//					for (String path : usedDepJar.getJarFilePaths(true)) {
+//						usedJarPaths.add(path);
+//					}
+//					for (String path : depJar.getJarFilePaths(true)) {
+//						usedJarPaths.add(path);
+//					}
+//				} else {
 					for (String path : depJar.getJarFilePaths(true)) {
 						usedJarPaths.add(path);
-					}
+//					}
 				}
+			}
+			for (String path : usedDepJar.getJarFilePaths(true)) {
+				usedJarPaths.add(path);
 			}
 		}
 		return usedJarPaths;

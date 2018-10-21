@@ -3,6 +3,7 @@ package neu.lab.conflict.risk.jar;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
@@ -153,6 +154,18 @@ public class DepJarJRisk {
 		return distances;
 	}
 
+	public Set<String> getMethodBottom(Map<String, IBook> books) {
+		Set<String> bottomMethods = new HashSet<String>();
+		for (IBook book : books.values()) {
+			// MavenUtil.i().getLog().info("book:"+book.getNodeName());
+			for (IRecord iRecord : book.getRecords()) {
+				Record4distance record = (Record4distance) iRecord;
+				bottomMethods.add(record.getName());
+			}
+		}
+		return bottomMethods;
+	}
+	
 	public Collection<String> getPrcDirPaths() throws Exception {
 		List<String> classpaths ;
 		if(GlobalVar.useAllJar) {
@@ -189,7 +202,7 @@ public class DepJarJRisk {
 	 * @return
 	 */
 	public Graph4distance getGraph4distance() {
-		if (graph4distance == null) {
+		//if (graph4distance == null) {
 			if (getThrownMthds().size() > 0) {
 //				for(String riskMthd:getThrownMthds()) {
 //					System.out.println(riskMthd);
@@ -208,7 +221,7 @@ public class DepJarJRisk {
 			} else {
 				graph4distance = new Graph4distance(new HashMap<String, Node4distance>(), new ArrayList<MethodCall>());
 			}
-		}
+		//}
 		return graph4distance;
 	}
 

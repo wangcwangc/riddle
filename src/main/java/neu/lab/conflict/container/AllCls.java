@@ -42,6 +42,9 @@ public class AllCls {
 			}
 		}
 	}
+	/*
+	 * 重构方法，使初始化方法有默认参数
+	 */
 	private AllCls(DepJars depJars, DepJar usedDepJar) {
 		clses = new HashSet<String>();
 		for (DepJar depJar : depJars.getAllDepJar()) {
@@ -49,10 +52,12 @@ public class AllCls {
 				//得到depJar中所有的类
 				if (depJar.isSameLib(usedDepJar)) {
 					clses.addAll(usedDepJar.getAllCls(true));
+//					clses.addAll(depJar.getAllCls(true));
 				} else {
 					clses.addAll(depJar.getAllCls(true));
 				}
 			}
+//			clses.addAll(usedDepJar.getAllCls(true));
 		}
 	}
 	public Set<String> getAllCls() {

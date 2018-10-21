@@ -70,6 +70,11 @@ public class AllRefedCls {
 		}
 		return instance;
 	}
+	
+	public static void init(DepJar depJar) {
+		instance = new AllRefedCls(depJar);
+	}
+	
 	public static AllRefedCls i(DepJar depJar) {
 		instance = new AllRefedCls(depJar);
 		return instance;

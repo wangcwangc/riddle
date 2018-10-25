@@ -156,7 +156,33 @@ public class ConflictJRisk {
 		} else if (!useSet && !noUseSet) {
 			riskLevel = 4;
 		}
+		
+		//重置
+		this.setUsedDepJar(usedDepJar);
+		AllCls.init(DepJars.i(), usedDepJar);
+		AllRefedCls.init(usedDepJar);
 		return riskLevel;
 	}
 
+	/**
+	 * 得到风险方法集合
+	 * @return
+	 */
+	public Set<String> getRiskMethods(){
+		Set<String> usedDepJarSet = new HashSet<String>();		//被使用的usedDepJar风险方法集合
+		for (DepJarJRisk depJarJRisk : jarRisks) {
+			Graph4distance distanceGraph = depJarJRisk.getGraph4distance();
+			Map<String, IBook> distanceBooks = new Dog(distanceGraph).findRlt(distanceGraph.getHostNds(),
+					Conf.DOG_DEP_FOR_DIS, Strategy.NOT_RESET_BOOK);
+//			MethodProbDistances distances = depJarJRisk.getMethodProDistances(distanceBooks);
+			Set<String> bottomMethods = depJarJRisk.getMethodBottom(distanceBooks);
+			for (String method : bottomMethods) {
+				System.out.println(method);
+				if (!usedDepJarSet.contains(method)) {
+					usedDepJarSet.add(method);
+				}
+			}
+		}
+		return usedDepJarSet;
+	}
 }

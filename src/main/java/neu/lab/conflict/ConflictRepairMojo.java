@@ -12,7 +12,8 @@ public class ConflictRepairMojo extends ConflictMojo {
 	public void run() {
 		// TODO Auto-generated method stub
 		RepairWriter repairWriter = new RepairWriter();
-		repairWriter.write();
+		repairWriter.write("D:\\riddle_risklevel\\outlevel\\");	//服务器
+//		repairWriter.write("/Users/wangchao/Develop/neu/");		//mac
 //		riskLevelWriter.writeRiskLevelXML("/Users/wangchao/Develop/neu/RiskLevel.xml", append);	//mac下路径
 		//riskLevelWriter.writeRiskLevel("D:\\riddle\\RiskLevel.xml", append);	//win下路径
 	}

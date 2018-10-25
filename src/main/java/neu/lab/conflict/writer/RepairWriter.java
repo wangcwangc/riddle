@@ -12,9 +12,10 @@ import neu.lab.conflict.vo.Conflict;
 
 public class RepairWriter {
 
-	public void write() {
-		String projectName = MavenUtil.i().getProjectGroupId() + MavenUtil.i().getProjectArtifactId() + MavenUtil.i().getProjectVersion();
-		String distanceFile = "/Users/wangchao/Develop/neu/" + projectName + ".txt";
+	public void write(String outPath) {
+		String projectName = MavenUtil.i().getProjectGroupId() + MavenUtil.i().getProjectArtifactId()
+				+ MavenUtil.i().getProjectVersion();
+		String distanceFile = outPath + projectName + ".txt";
 		PrintWriter printer = null;
 		try {
 			printer = new PrintWriter(new BufferedWriter(new FileWriter(distanceFile)));

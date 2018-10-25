@@ -36,7 +36,7 @@ public class Conflicts {
 		Iterator<Conflict> ite = container.iterator();
 		while (ite.hasNext()) {
 			Conflict conflict = ite.next();
-			if (!conflict.isConflict()||!wantCal(conflict)) {	//如果这个方法不是冲突
+			if (!conflict.isConflict()||!wantCal(conflict)) {	//如果这个方法不是需要的冲突
 				ite.remove();
 			}
 		}

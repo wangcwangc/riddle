@@ -1,6 +1,7 @@
 package neu.lab.conflict.writer;
 
 import java.io.CharArrayWriter;
+import java.io.File;
 import java.io.FileWriter;
 import java.io.Writer;
 import java.util.Map;
@@ -48,7 +49,7 @@ public class RiskLevelWriter {
 			if (outPath == null) {
 				fileWriter = new CharArrayWriter();
 			} else {
-				fileWriter = new FileWriter(outPath + fileName.replace('.', ':') + ".xml", append);
+				fileWriter = new FileWriter(new File(outPath + fileName.replace('.', ':')) + ".xml", append);
 			}
 			OutputFormat format = OutputFormat.createPrettyPrint();
 			format.setNewlines(true);

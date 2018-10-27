@@ -1,10 +1,8 @@
 package neu.lab.conflict.writer;
 
 import java.io.CharArrayWriter;
-import java.io.File;
 import java.io.FileWriter;
 import java.io.Writer;
-import java.util.Map;
 import java.util.Set;
 
 import org.dom4j.Document;
@@ -15,23 +13,10 @@ import org.dom4j.io.XMLWriter;
 import org.dom4j.tree.DefaultElement;
 
 import neu.lab.conflict.container.Conflicts;
-import neu.lab.conflict.container.DepJars;
-import neu.lab.conflict.container.NodeAdapters;
-import neu.lab.conflict.graph.Book4path;
-import neu.lab.conflict.graph.Dog;
-import neu.lab.conflict.graph.Graph4distance;
-import neu.lab.conflict.graph.Graph4path;
-import neu.lab.conflict.graph.IBook;
-import neu.lab.conflict.graph.IRecord;
-import neu.lab.conflict.graph.Record4path;
-import neu.lab.conflict.graph.Dog.Strategy;
 import neu.lab.conflict.risk.jar.ConflictJRisk;
 import neu.lab.conflict.risk.jar.DepJarJRisk;
-import neu.lab.conflict.util.Conf;
 import neu.lab.conflict.util.MavenUtil;
 import neu.lab.conflict.vo.Conflict;
-import neu.lab.conflict.vo.DepJar;
-import neu.lab.conflict.vo.NodeAdapter;
 
 public class RiskLevelWriter {
 
@@ -49,7 +34,7 @@ public class RiskLevelWriter {
 			if (outPath == null) {
 				fileWriter = new CharArrayWriter();
 			} else {
-				fileWriter = new FileWriter(new File(outPath + fileName.replace('.', ':')) + ".xml", append);
+				fileWriter = new FileWriter(outPath + fileName.replace('.', '_').replace(':', '_') + ".xml", append);
 			}
 			OutputFormat format = OutputFormat.createPrettyPrint();
 			format.setNewlines(true);
@@ -90,8 +75,6 @@ public class RiskLevelWriter {
 		element.addAttribute("versions", conflict.getVersions().toString());
 		ConflictJRisk conflictJRisk = conflict.getJRisk();
 		int riskLevel = 0;
-//		int riskLevel = conflictJRisk.getRiskLevel();
-//		int riskLevel = conflictJRisk.getConflictLevel();
 		Set<String> usedRiskMethods = conflictJRisk.getConflictLevel();
 		if (usedRiskMethods.isEmpty()) {
 			riskLevel = 1;

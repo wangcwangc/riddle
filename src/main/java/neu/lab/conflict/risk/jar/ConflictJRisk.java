@@ -1,9 +1,5 @@
 package neu.lab.conflict.risk.jar;
 
-import java.io.BufferedWriter;
-import java.io.FileWriter;
-import java.io.IOException;
-import java.io.PrintWriter;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.HashSet;
@@ -74,20 +70,19 @@ public class ConflictJRisk {
 		Map<String, Set<String>> nowUsedDepJarMethod = null; // 当前DepJar风险方法集合
 		Set<String> bottomMethods = null;
 		for (DepJar depJar : depJars) {
-			System.out.println(depJar.toString());
 			nowUsedDepJarMethod = new HashMap<String, Set<String>>();
+			// 初始化
+			this.setUsedDepJar(depJar);
+			AllCls.init(DepJars.i(), depJar);
+			AllRefedCls.init(depJar);
+
 			for (DepJarJRisk depJarJRisk : jarRisks) {
 				bottomMethods = new HashSet<String>();
-				System.out.println(depJarJRisk.toString());
-				this.setUsedDepJar(depJar);
 				if (depJarJRisk.getConflictJar() != this.conflict.getUsedDepJar()) {
 					isUsedDepJar = false;
 					if (depJar.isSelf(usedDepJar)) {
 						isUsedDepJar = true;
 					}
-					// 初始化
-					AllCls.init(DepJars.i(), depJar);
-					AllRefedCls.init(depJar);
 
 					Graph4distance distanceGraph = depJarJRisk.getGraph4distance();
 
@@ -122,6 +117,7 @@ public class ConflictJRisk {
 		if (usedDepJarSet.isEmpty()) {
 			useSet = true;
 		}
+		System.out.println(isNotUsedDepJarMap);
 		for (Entry<String, Map<String, Set<String>>> entrys : isNotUsedDepJarMap.entrySet()) {
 			Map<String, Set<String>> mapEntry = entrys.getValue();
 			boolean isnot = true;

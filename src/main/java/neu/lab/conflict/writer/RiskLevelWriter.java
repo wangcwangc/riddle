@@ -43,11 +43,12 @@ public class RiskLevelWriter {
 	public void writeRiskLevelXML(String outPath, boolean append) {
 		try {
 			Writer fileWriter;
-			String fileName = MavenUtil.i().getProjectGroupId() + ":" + MavenUtil.i().getProjectArtifactId() + ":" + MavenUtil.i().getProjectVersion();
+			String fileName = MavenUtil.i().getProjectGroupId() + ":" + MavenUtil.i().getProjectArtifactId() + ":"
+					+ MavenUtil.i().getProjectVersion();
 			if (outPath == null) {
 				fileWriter = new CharArrayWriter();
 			} else {
-				fileWriter = new FileWriter(outPath + fileName.replace('.', ':'), append);
+				fileWriter = new FileWriter(outPath + fileName.replace('.', ':') + ".xml", append);
 			}
 			OutputFormat format = OutputFormat.createPrettyPrint();
 			format.setNewlines(true);
@@ -77,7 +78,7 @@ public class RiskLevelWriter {
 		}
 	}
 
-	/*
+	/**
 	 * method:输出所有遍历方法的风险等级，无风险1/2，有风险3/4 author:wangchao time:2018-9-24 13:25:18
 	 */
 	private Element PrintConflictRiskLevel(Conflict conflict) {
@@ -87,21 +88,29 @@ public class RiskLevelWriter {
 		element.addAttribute("groupId-artifactId", conflict.getSig());
 		element.addAttribute("versions", conflict.getVersions().toString());
 		ConflictJRisk conflictJRisk = conflict.getJRisk();
-		int riskLevel = conflictJRisk.getRiskLevel();
+		int riskLevel = 0;
+//		int riskLevel = conflictJRisk.getRiskLevel();
+//		int riskLevel = conflictJRisk.getConflictLevel();
+		Set<String> usedRiskMethods = conflictJRisk.getConflictLevel();
+		if (usedRiskMethods.isEmpty()) {
+			riskLevel = 1;
+		} else {
+			riskLevel = conflictJRisk.getRiskLevel();
+		}
 		element.addAttribute("riskLevel", riskLevel + "");
 
 		element.add(AddPath(conflict));
 		Element risksEle = element.addElement("RiskMethods");
-		
-		for (String method : conflictJRisk.getRiskMethods()) {
+
+		for (String method : usedRiskMethods) {
 			Element riskMethod = new DefaultElement("RiskMethod");
 			risksEle.add(riskMethod);
 			riskMethod.addText(method.replace('<', ' ').replace('>', ' '));
 		}
 		if (riskLevel == 1) {
-			risksEle.addAttribute("tip", "method was be referenced and be loaded !");
+			risksEle.addAttribute("tip", "jar was be referenced and be loaded !");
 		} else if (riskLevel == 2) {
-			risksEle.addAttribute("tip", "method was be referenced and be loaded !");
+			risksEle.addAttribute("tip", "jar was be referenced and be loaded !");
 		} else if (riskLevel == 3) {
 			risksEle.addAttribute("tip", "methods would be referenced but not be loaded !");
 		} else if (riskLevel == 4) {
@@ -110,7 +119,7 @@ public class RiskLevelWriter {
 		return elements;
 	}
 
-	/*
+	/**
 	 * method:添加jar包path author:wangchao time:2018-9-23 13:30:09
 	 */
 	private Element AddPath(Conflict conflict) {

@@ -5,6 +5,7 @@ import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 
 import neu.lab.conflict.GlobalVar;
 import neu.lab.conflict.graph.Graph4distance;
@@ -27,7 +28,13 @@ public class JRiskDistanceCgTf extends JRiskCgTf {
 	public JRiskDistanceCgTf(DepJarJRisk depJarJRisk) {
 		super(depJarJRisk);
 	}
-
+	/**
+	 * 重构函数
+	 * @param depJarJRisk
+	 */
+	public JRiskDistanceCgTf(DepJarJRisk depJarJRisk, Set<String> thrownmethods) {
+		super(depJarJRisk, thrownmethods);
+	}
 	/**
 	 * 产生图，其中不包含JavaLib的方法，同时不包含conflictJar的方法
 	 */

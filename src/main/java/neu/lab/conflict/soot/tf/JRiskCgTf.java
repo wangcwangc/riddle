@@ -37,6 +37,20 @@ public abstract class JRiskCgTf extends SceneTransformer {
 		rchMthds = new HashSet<String>();
 
 	}
+	/**
+	 * 重构函数
+	 * @param depJarJRisk
+	 * @param thrownMethods
+	 */
+	public JRiskCgTf(DepJarJRisk depJarJRisk, Set<String> thrownMethods) {
+		super();
+		// this.depJarJRisk = depJarJRisk;
+		entryClses = depJarJRisk.getEntryJar().getAllCls(true);
+		conflictJarClses = depJarJRisk.getConflictJar().getAllCls(true);
+		riskMthds = thrownMethods;
+		rchMthds = new HashSet<String>();
+
+	}
 
 	@Override
 	protected void internalTransform(String arg0, Map<String, String> arg1) {

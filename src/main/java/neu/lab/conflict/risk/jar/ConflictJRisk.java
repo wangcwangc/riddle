@@ -66,24 +66,26 @@ public class ConflictJRisk {
 	 * 可以细分等级1, 2，3，4 method:得到风险等级 name:wangchao time:2018-9-29 16:27:21
 	 */
 	public int getRiskLevel() {
-
-		boolean isUsedDepJar = false;	//记录参与运算的depJar是不是本项目被使用的usedDepJar
+		boolean isUsedDepJar = false; // 记录参与运算的depJar是不是本项目被使用的usedDepJar
 		DepJar usedDepJar = conflict.getUsedDepJar(); // 记录usedJar
 		Set<DepJar> depJars = conflict.getDepJars();
-		Set<String> usedDepJarSet = new HashSet<String>();		//被使用的usedDepJar风险方法集合
-		Map<String, Map<String, Set<String>>> isNotUsedDepJarMap = new HashMap<String, Map<String, Set<String>>>();	//未被使用的usedDepJars风险方法集合
-		Map<String, Set<String>> nowUsedDepJarMethod = null;	//当前DepJar风险方法集合
+		Set<String> usedDepJarSet = new HashSet<String>(); // 被使用的usedDepJar风险方法集合
+		Map<String, Map<String, Set<String>>> isNotUsedDepJarMap = new HashMap<String, Map<String, Set<String>>>(); // 未被使用的usedDepJars风险方法集合
+		Map<String, Set<String>> nowUsedDepJarMethod = null; // 当前DepJar风险方法集合
+		Set<String> bottomMethods = null;
 		for (DepJar depJar : depJars) {
+			System.out.println(depJar.toString());
 			nowUsedDepJarMethod = new HashMap<String, Set<String>>();
 			for (DepJarJRisk depJarJRisk : jarRisks) {
-
+				bottomMethods = new HashSet<String>();
+				System.out.println(depJarJRisk.toString());
 				this.setUsedDepJar(depJar);
 				if (depJarJRisk.getConflictJar() != this.conflict.getUsedDepJar()) {
 					isUsedDepJar = false;
 					if (depJar.isSelf(usedDepJar)) {
 						isUsedDepJar = true;
 					}
-					//初始化
+					// 初始化
 					AllCls.init(DepJars.i(), depJar);
 					AllRefedCls.init(depJar);
 
@@ -91,19 +93,17 @@ public class ConflictJRisk {
 
 					if (distanceGraph.getAllNode().isEmpty()) {
 						MavenUtil.i().getLog().info("distanceGraph is empty");
+						nowUsedDepJarMethod.put(depJarJRisk.getConflictJar().toString(), bottomMethods);
 						break;
 					}
 
 					Map<String, IBook> distanceBooks = new Dog(distanceGraph).findRlt(distanceGraph.getHostNds(),
 							Conf.DOG_DEP_FOR_DIS, Strategy.NOT_RESET_BOOK);
-//					MethodProbDistances distances = depJarJRisk.getMethodProDistances(distanceBooks);
-					Set<String> bottomMethods = depJarJRisk.getMethodBottom(distanceBooks);
+					bottomMethods = depJarJRisk.getMethodBottom(distanceBooks);
 					if (isUsedDepJar) {
 						usedDepJarSet.addAll(bottomMethods);
 					} else {
-
 						nowUsedDepJarMethod.put(depJarJRisk.getConflictJar().toString(), bottomMethods);
-
 					}
 				}
 
@@ -111,7 +111,6 @@ public class ConflictJRisk {
 			if (!nowUsedDepJarMethod.isEmpty()) {
 				isNotUsedDepJarMap.put(this.conflict.getUsedDepJar().toString(), nowUsedDepJarMethod);
 			}
-
 		}
 		/*
 		 * 使用的集合是不是为空 不使用的集合是不是为空
@@ -141,9 +140,9 @@ public class ConflictJRisk {
 			noUseSet = true;
 		}
 		int riskLevel = 0;
+		System.out.println(noUseSet);
 		/*
-		 * 风险1：项目使用的jar包和不使用的jar包的风险方法集合都为空
-		 * 风险2：项目使用的jar包风险方法集合为空，不使用的jar包都有风险方法
+		 * 风险1：项目使用的jar包和不使用的jar包的风险方法集合都为空 风险2：项目使用的jar包风险方法集合为空，不使用的jar包都有风险方法
 		 * 风险3：项目使用的jar包风险方法集合不为空，不使用的jar包中有风险方法集合为空的jar包
 		 * 风险4：项目使用的jar包和不使用的jar包的风险方法集合都为空
 		 */
@@ -156,8 +155,7 @@ public class ConflictJRisk {
 		} else if (!useSet && !noUseSet) {
 			riskLevel = 4;
 		}
-		
-		//重置
+		// 重置
 		this.setUsedDepJar(usedDepJar);
 		AllCls.init(DepJars.i(), usedDepJar);
 		AllRefedCls.init(usedDepJar);
@@ -165,24 +163,20 @@ public class ConflictJRisk {
 	}
 
 	/**
-	 * 得到风险方法集合
+	 * 得到Conflict的等级 分为1-3两个等级 记录3等级Conflict（1等级的Conflict忽略不计算，可大幅减少运算时间）
+	 * 继续计算3等级，分为3-4两个等级
+	 * 
 	 * @return
 	 */
-	public Set<String> getRiskMethods(){
-		Set<String> usedDepJarSet = new HashSet<String>();		//被使用的usedDepJar风险方法集合
+	public Set<String> getConflictLevel() {
+		Set<String> usedRiskMethods = new HashSet<String>(); // 被使用的usedDepJar风险方法集合
 		for (DepJarJRisk depJarJRisk : jarRisks) {
 			Graph4distance distanceGraph = depJarJRisk.getGraph4distance();
 			Map<String, IBook> distanceBooks = new Dog(distanceGraph).findRlt(distanceGraph.getHostNds(),
 					Conf.DOG_DEP_FOR_DIS, Strategy.NOT_RESET_BOOK);
-//			MethodProbDistances distances = depJarJRisk.getMethodProDistances(distanceBooks);
 			Set<String> bottomMethods = depJarJRisk.getMethodBottom(distanceBooks);
-			for (String method : bottomMethods) {
-				System.out.println(method);
-				if (!usedDepJarSet.contains(method)) {
-					usedDepJarSet.add(method);
-				}
-			}
+			usedRiskMethods.addAll(bottomMethods);
 		}
-		return usedDepJarSet;
+		return usedRiskMethods;
 	}
 }

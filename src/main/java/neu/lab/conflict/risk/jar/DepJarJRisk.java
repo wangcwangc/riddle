@@ -33,16 +33,17 @@ import neu.lab.conflict.vo.MethodCall;
 
 /**
  * 依赖风险jar
+ * 
  * @author wangchao
  *
  */
 public class DepJarJRisk {
-	private DepJar depJar;	//依赖jar
-	private ConflictJRisk conflictRisk;		//有风险的冲突jar
-	private Set<String> thrownMthds;		//抛弃的方法
+	private DepJar depJar; // 依赖jar
+	private ConflictJRisk conflictRisk; // 有风险的冲突jar
+	private Set<String> thrownMthds; // 抛弃的方法
 	// private Set<String> rchedMthds;
-	private Graph4distance graph4distance;		//图
-	private Map<String, IBook> books;			//book记录用
+	private Graph4distance graph4distance; // 图
+	private Map<String, IBook> books; // book记录用
 
 	/*
 	 * 构造函数
@@ -53,7 +54,7 @@ public class DepJarJRisk {
 		// calculate thrownMthd
 
 		// calculate call-graph
- 
+
 	}
 
 	/*
@@ -65,48 +66,52 @@ public class DepJarJRisk {
 
 	/**
 	 * 得到抛弃的方法
+	 * 
 	 * @return
 	 */
 	public Set<String> getThrownMthds() {
 		// "<neu.lab.plug.testcase.homemade.host.prob.ProbBottom: void m()>"
-		
-		//if (thrownMthds == null) {
 
-			// //TODO1
-			// thrownMthds = new HashSet<String>();
-			// thrownMthds.add("<com.fasterxml.jackson.core.JsonFactory: boolean
-			// requiresPropertyOrdering()>");
+		// if (thrownMthds == null) {
 
-			thrownMthds = conflictRisk.getUsedDepJar().getRiskMthds(depJar.getAllMthd());
-			MavenUtil.i().getLog().info("riskMethod size before filter: " + thrownMthds.size());
+		// //TODO1
+		// thrownMthds = new HashSet<String>();
+		// thrownMthds.add("<com.fasterxml.jackson.core.JsonFactory: boolean
+		// requiresPropertyOrdering()>");
+
+		thrownMthds = conflictRisk.getUsedDepJar().getRiskMthds(depJar.getAllMthd());
+		MavenUtil.i().getLog().info("riskMethod size before filter: " + thrownMthds.size());
 //			MavenUtil.i().getLog().info("contains : " + thrownMthds.contains("<com.fasterxml.jackson.databind.node.JsonNodeFactory: com.fasterxml.jackson.databind.node.NumericNode numberNode(java.math.BigInteger)>"));
-			if (thrownMthds.size() > 0)
-				new SootRiskMthdFilter().filterRiskMthds(thrownMthds);
-			MavenUtil.i().getLog().info("riskMethod size after filter1: " + thrownMthds.size());
+//测试		if (thrownMthds.size() > 0)
+//			new SootRiskMthdFilter().filterRiskMthds(thrownMthds);
+//		MavenUtil.i().getLog().info("riskMethod size after filter1: " + thrownMthds.size());
 //			MavenUtil.i().getLog().info("contains : " + thrownMthds.contains("<com.fasterxml.jackson.databind.node.JsonNodeFactory: com.fasterxml.jackson.databind.node.NumericNode numberNode(java.math.BigInteger)>"));
-			if (thrownMthds.size() > 0)
-				new SootRiskMthdFilter2().filterRiskMthds(this, thrownMthds);
-			MavenUtil.i().getLog().info("riskMethod size after filter2: " + thrownMthds.size());
-			MavenUtil.i().getLog().info("contains : " + thrownMthds.contains("<org.apache.http.impl.client.CloseableHttpClient: org.apache.http.client.methods.CloseableHttpResponse execute(org.apache.http.HttpHost,org.apache.http.HttpRequest,org.apache.http.protocol.HttpContext)>"));
-			MavenUtil.i().getLog().info("contains : " + thrownMthds.contains("<org.apache.http.impl.client.HttpClientBuilder: org.apache.http.impl.client.CloseableHttpClient build()>"));
-			// //TODO1
-			// if(thrownMthds.contains("<com.fasterxml.jackson.core.JsonFactory: boolean
-			// requiresPropertyOrdering()>")) {
-			// MavenUtil.i().getLog().info("thronMethods has
-			// <com.fasterxml.jackson.core.JsonFactory: boolean
-			// requiresPropertyOrdering()>");
-			// }
+//测试		if (thrownMthds.size() > 0)
+//			new SootRiskMthdFilter2().filterRiskMthds(this, thrownMthds);
+//MavenUtil.i().getLog().info("riskMethod size after filter2: " + thrownMthds.size());
+//		MavenUtil.i().getLog().info("contains : " + thrownMthds.contains(
+//				"<org.apache.http.impl.client.CloseableHttpClient: org.apache.http.client.methods.CloseableHttpResponse execute(org.apache.http.HttpHost,org.apache.http.HttpRequest,org.apache.http.protocol.HttpContext)>"));
+//		MavenUtil.i().getLog().info("contains : " + thrownMthds.contains(
+//				"<org.apache.http.impl.client.HttpClientBuilder: org.apache.http.impl.client.CloseableHttpClient build()>"));
+		// //TODO1
+		// if(thrownMthds.contains("<com.fasterxml.jackson.core.JsonFactory: boolean
+		// requiresPropertyOrdering()>")) {
+		// MavenUtil.i().getLog().info("thronMethods has
+		// <com.fasterxml.jackson.core.JsonFactory: boolean
+		// requiresPropertyOrdering()>");
+		// }
 
-		//}
+		// }
 		return thrownMthds;
 	}
-	
+
 	/**
 	 * 用传入的depJar去得到抛弃的方法
+	 * 
 	 * @param depJar
 	 * @return
 	 */
-	public Set<String> getThrownMthds(DepJar enterDepJar){
+	public Set<String> getThrownMthds(DepJar enterDepJar) {
 		thrownMthds = conflictRisk.getUsedDepJar().getRiskMthds(depJar.getAllMthd(), enterDepJar);
 		MavenUtil.i().getLog().info("riskMethod size before filter: " + thrownMthds.size());
 //		MavenUtil.i().getLog().info("contains : " + thrownMthds.contains("<com.fasterxml.jackson.databind.node.JsonNodeFactory: com.fasterxml.jackson.databind.node.NumericNode numberNode(java.math.BigInteger)>"));
@@ -117,12 +122,13 @@ public class DepJarJRisk {
 		if (thrownMthds.size() > 0)
 			new SootRiskMthdFilter2().filterRiskMthds(this, thrownMthds);
 		MavenUtil.i().getLog().info("riskMethod size after filter2: " + thrownMthds.size());
-		MavenUtil.i().getLog().info("contains : " + thrownMthds.contains("<org.apache.http.impl.client.CloseableHttpClient: org.apache.http.client.methods.CloseableHttpResponse execute(org.apache.http.HttpHost,org.apache.http.HttpRequest,org.apache.http.protocol.HttpContext)>"));
-		MavenUtil.i().getLog().info("contains : " + thrownMthds.contains("<org.apache.http.impl.client.HttpClientBuilder: org.apache.http.impl.client.CloseableHttpClient build()>"));
+		MavenUtil.i().getLog().info("contains : " + thrownMthds.contains(
+				"<org.apache.http.impl.client.CloseableHttpClient: org.apache.http.client.methods.CloseableHttpResponse execute(org.apache.http.HttpHost,org.apache.http.HttpRequest,org.apache.http.protocol.HttpContext)>"));
+		MavenUtil.i().getLog().info("contains : " + thrownMthds.contains(
+				"<org.apache.http.impl.client.HttpClientBuilder: org.apache.http.impl.client.CloseableHttpClient build()>"));
 		return thrownMthds;
 	}
-	
-	
+
 	public MethodProbDistances getMethodProDistances() {
 		MethodProbDistances distances = new MethodProbDistances();
 		Map<String, IBook> books = getBooks4distance();
@@ -138,7 +144,7 @@ public class DepJarJRisk {
 		}
 		return distances;
 	}
-	
+
 	public MethodProbDistances getMethodProDistances(Map<String, IBook> books) {
 		MethodProbDistances distances = new MethodProbDistances();
 		for (IBook book : books.values()) {
@@ -165,20 +171,20 @@ public class DepJarJRisk {
 		}
 		return bottomMethods;
 	}
-	
+
 	public Collection<String> getPrcDirPaths() throws Exception {
-		List<String> classpaths ;
-		if(GlobalVar.useAllJar) {
-			classpaths =  depJar.getRepalceCp();
-		}else {
+		List<String> classpaths;
+		if (GlobalVar.useAllJar) {
+			classpaths = depJar.getRepalceCp();
+		} else {
 			MavenUtil.i().getLog().info("not add all jar to process");
 			classpaths = new ArrayList<String>();
-			//keep first is self
+			// keep first is self
 			classpaths.addAll(this.depJar.getJarFilePaths(true));
 			classpaths.addAll(this.depJar.getFatherJarCps(false));
-			
+
 		}
-		
+
 //		MavenUtil.i().getLog().info("classpath for "+this.toString());
 //		for(String path:classpaths) {
 //			System.out.println("argsList.add(\"-process-dir\");");
@@ -186,7 +192,7 @@ public class DepJarJRisk {
 //		}
 //		
 		return classpaths;
-		
+
 	}
 
 	public DepJar getEntryJar() {
@@ -199,29 +205,32 @@ public class DepJarJRisk {
 
 	/**
 	 * 得到距离图
+	 * 
 	 * @return
 	 */
 	public Graph4distance getGraph4distance() {
-		//if (graph4distance == null) {
-			if (getThrownMthds().size() > 0) {
+		// if (graph4distance == null) {
+		Set<String> thrownmethods = getThrownMthds();
+		if (thrownmethods.size() > 0) {
 //				for(String riskMthd:getThrownMthds()) {
 //					System.out.println(riskMthd);
 //				}
-				for (String mthd : getThrownMthds()) {
-					MavenUtil.i().getLog().info("first riskmthd:" + mthd);
-					//测试
-				}
-				//MavenUtil.i().getLog().info("first riskmthd:" + getThrownMthds().iterator().next());
-				IGraph iGraph = SootJRiskCg.i().getGraph4distance(this,new JRiskDistanceCgTf(this));
-				if (iGraph != null) {
-					graph4distance = (Graph4distance) iGraph;
-				} else {
-					graph4distance = new Graph4distance(new HashMap<String, Node4distance>(), new ArrayList<MethodCall>());
-				}
+//			for (String mthd : getThrownMthds()) {
+//				MavenUtil.i().getLog().info("first riskmthd:" + mthd);
+//				// 测试
+//			}
+			// MavenUtil.i().getLog().info("first riskmthd:" +
+			// getThrownMthds().iterator().next());
+			IGraph iGraph = SootJRiskCg.i().getGraph4distance(this, new JRiskDistanceCgTf(this, thrownmethods));
+			if (iGraph != null) {
+				graph4distance = (Graph4distance) iGraph;
 			} else {
 				graph4distance = new Graph4distance(new HashMap<String, Node4distance>(), new ArrayList<MethodCall>());
 			}
-		//}
+		} else {
+			graph4distance = new Graph4distance(new HashMap<String, Node4distance>(), new ArrayList<MethodCall>());
+		}
+		// }
 		return graph4distance;
 	}
 
@@ -239,9 +248,10 @@ public class DepJarJRisk {
 		if (this.books == null) {
 			if (getThrownMthds().size() > 0) {
 				// calculate distance
-				
-				books = new Dog(getGraph4distance()).findRlt(getGraph4distance().getHostNds(),Conf.DOG_DEP_FOR_DIS,Dog.Strategy.NOT_RESET_BOOK);
-				
+
+				books = new Dog(getGraph4distance()).findRlt(getGraph4distance().getHostNds(), Conf.DOG_DEP_FOR_DIS,
+						Dog.Strategy.NOT_RESET_BOOK);
+
 //				GraphPrinter.printGraph(graph4branch, "d:\\graph_distance.txt",getGraph4branch().getHostNds());
 			} else {
 				books = new HashMap<String, IBook>();

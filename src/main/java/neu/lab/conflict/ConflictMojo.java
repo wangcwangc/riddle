@@ -23,6 +23,7 @@ import neu.lab.conflict.container.NodeAdapters;
 import neu.lab.conflict.container.Conflicts;
 import neu.lab.conflict.util.Conf;
 import neu.lab.conflict.util.MavenUtil;
+import neu.lab.conflict.util.UserConf;
 import neu.lab.conflict.vo.DepJar;
 import neu.lab.evoshell.ShellConfig;
 
@@ -84,6 +85,10 @@ public abstract class ConflictMojo extends AbstractMojo {
 	@Parameter(property = "callConflict")
 	public String callConflict = null;
 
+	//自定义输出目录
+	@Parameter(property = "resultPath")
+	public String resultPath = null;
+	
 	@Parameter(property = "findAllPath")
 	public boolean findAllPath = false;
 
@@ -100,6 +105,7 @@ public abstract class ConflictMojo extends AbstractMojo {
 		Conf.DOG_DEP_FOR_PATH = pathDepth;
 		Conf.callConflict = callConflict;
 		Conf.findAllpath = findAllPath;
+		UserConf.setOutDir(resultPath);
 		GlobalVar.useAllJar = useAllJar;
 		ShellConfig.mvnRep = MavenUtil.i().getMvnRep();
 

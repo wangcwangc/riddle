@@ -12,9 +12,9 @@ public class Conflicts {
 	private static Conflicts instance;
 
 	public static void init(NodeAdapters nodeAdapters) {
-		if (instance == null) {
+		//if (instance == null) {   不使用单例模式
 			instance = new Conflicts(nodeAdapters);
-		}
+		//}
 	}
 
 	public static Conflicts i() {

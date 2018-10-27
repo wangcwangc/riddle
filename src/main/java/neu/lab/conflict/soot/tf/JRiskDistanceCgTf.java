@@ -26,7 +26,7 @@ import soot.jimple.toolkits.callgraph.Edge;
 public class JRiskDistanceCgTf extends JRiskCgTf {
 
 	private static CallGraph instance = null;
-	private static Iterator<Edge> iterator = null;
+//	private static Iterator<Edge> iterator = null;
 	
 	public JRiskDistanceCgTf(DepJarJRisk depJarJRisk) {
 		super(depJarJRisk);
@@ -41,19 +41,18 @@ public class JRiskDistanceCgTf extends JRiskCgTf {
 	
 	public static CallGraph getThisCallGraph() {
 		if(instance == null) {
-			System.out.println("cg null");
 			instance = Scene.v().getCallGraph();//得到图
 		}
 		return instance;
 	}
 	
-	public static Iterator<Edge> getIteratorForEdge(){
-		if (iterator == null) {
-			System.out.println("cg null");
-			iterator = getThisCallGraph().iterator();//得到边集合
-		}
-		return iterator;
-	}
+//	public static Iterator<Edge> getIteratorForEdge(){
+//		if (iterator == null) {
+//			System.out.println("cg null");
+//			iterator = getThisCallGraph().iterator();//得到边集合
+//		}
+//		return iterator;
+//	}
 	/**
 	 * 产生图，其中不包含JavaLib的方法，同时不包含conflictJar的方法
 	 */

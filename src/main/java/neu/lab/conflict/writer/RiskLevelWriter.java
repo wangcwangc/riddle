@@ -77,7 +77,7 @@ public class RiskLevelWriter {
 		int riskLevel = 0;
 		Set<String> usedRiskMethods = conflictJRisk.getConflictLevel();
 		if (usedRiskMethods.isEmpty()) {
-			riskLevel = 1;
+			riskLevel = 2;
 		} else {
 			riskLevel = conflictJRisk.getRiskLevel();
 		}

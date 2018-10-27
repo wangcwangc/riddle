@@ -25,7 +25,7 @@ public class NodeAdapters {
 	}
 
 	public static void init(DependencyNode root) {
-		if (instance == null) {
+		//if (instance == null) {
 			instance = new NodeAdapters();
 			// add node in dependency tree
 			NodeAdapterCollector visitor = new NodeAdapterCollector(instance);
@@ -56,7 +56,7 @@ public class NodeAdapters {
 			for (NodeAdapter manageNd : manageNds) {
 				instance.addNodeAapter(manageNd);
 			}
-		}
+		//}
 	}
 
 	private List<NodeAdapter> container;

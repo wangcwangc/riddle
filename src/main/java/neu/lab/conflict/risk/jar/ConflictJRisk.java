@@ -117,7 +117,6 @@ public class ConflictJRisk {
 		if (usedDepJarSet.isEmpty()) {
 			useSet = true;
 		}
-		System.out.println(isNotUsedDepJarMap);
 		for (Entry<String, Map<String, Set<String>>> entrys : isNotUsedDepJarMap.entrySet()) {
 			Map<String, Set<String>> mapEntry = entrys.getValue();
 			boolean isnot = true;

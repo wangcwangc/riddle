@@ -89,6 +89,10 @@ public abstract class ConflictMojo extends AbstractMojo {
 	@Parameter(property = "resultPath")
 	public String resultPath = null;
 	
+	//设置是否细分1234等级
+	@Parameter(property = "subdivisionLevel", defaultValue = "false")
+	public boolean subdivisionLevel;
+	
 	@Parameter(property = "findAllPath")
 	public boolean findAllPath = false;
 

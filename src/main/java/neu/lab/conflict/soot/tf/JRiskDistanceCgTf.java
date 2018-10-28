@@ -63,7 +63,7 @@ public class JRiskDistanceCgTf extends JRiskCgTf {
 			Map<String, Node4distance> name2node = new HashMap<String, Node4distance>();
 			List<MethodCall> mthdRlts = new ArrayList<MethodCall>();
 			
-			CallGraph cg = getThisCallGraph();//得到图
+			CallGraph cg = Scene.v().getCallGraph();//得到图
 			
 //			Iterator<Edge> ite = getIteratorForEdge();//得到边集合
 			Iterator<Edge> ite = cg.iterator();

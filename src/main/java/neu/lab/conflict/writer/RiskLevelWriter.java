@@ -26,7 +26,7 @@ public class RiskLevelWriter {
 	 * @param outPath
 	 * @param append
 	 */
-	public void writeRiskLevelXML(String outPath, boolean append) {
+	public void writeRiskLevelXML(String outPath, boolean append, boolean subdivisionLevel) {
 		try {
 			Writer fileWriter;
 			String fileName = MavenUtil.i().getProjectGroupId() + ":" + MavenUtil.i().getProjectArtifactId() + ":"
@@ -55,7 +55,7 @@ public class RiskLevelWriter {
 					MavenUtil.i().getProjectGroupId() + ":" + MavenUtil.i().getProjectArtifactId());
 			root.addAttribute("projectInfo", MavenUtil.i().getProjectInfo());
 			for (Conflict conflict : Conflicts.i().getConflicts()) {
-				root.add(PrintConflictRiskLevel(conflict));
+				root.add(PrintConflictRiskLevel(conflict, subdivisionLevel));
 			}
 			xmlWriter.write(document);
 			xmlWriter.close();
@@ -67,7 +67,7 @@ public class RiskLevelWriter {
 	/**
 	 * method:输出所有遍历方法的风险等级，无风险1/2，有风险3/4 author:wangchao time:2018-9-24 13:25:18
 	 */
-	private Element PrintConflictRiskLevel(Conflict conflict) {
+	private Element PrintConflictRiskLevel(Conflict conflict, boolean subdivisionLevel) {
 		Element elements = new DefaultElement("conflicts");
 		Element element = new DefaultElement("conflictJar");
 		elements.add(element);
@@ -76,11 +76,16 @@ public class RiskLevelWriter {
 		ConflictJRisk conflictJRisk = conflict.getJRisk();
 		int riskLevel = 0;
 		Set<String> usedRiskMethods = conflictJRisk.getConflictLevel();
-		if (usedRiskMethods.isEmpty()) {
-			riskLevel = 2;
-		} else {
+		if (subdivisionLevel) {
 			riskLevel = conflictJRisk.getRiskLevel();
+		} else {
+			if (usedRiskMethods.isEmpty()) {
+				riskLevel = 1;
+			} else {
+				riskLevel = 3;
+			}
 		}
+		
 		element.addAttribute("riskLevel", riskLevel + "");
 
 		element.add(AddPath(conflict));

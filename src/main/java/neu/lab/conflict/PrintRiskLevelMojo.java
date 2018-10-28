@@ -13,7 +13,7 @@ public class PrintRiskLevelMojo extends ConflictMojo {
 	public void run() {
 		// TODO Auto-generated method stub
 		RiskLevelWriter riskLevelWriter = new RiskLevelWriter();
-		riskLevelWriter.writeRiskLevelXML(UserConf.getOutDir(), append);	//mac下路径
+		riskLevelWriter.writeRiskLevelXML(UserConf.getOutDir(), append, subdivisionLevel);	//mac下路径
 //		riskLevelWriter.writeRiskLevelXML("/Users/wangchao/Develop/neu/", append);	//mac下路径
 		//riskLevelWriter.writeRiskLevel("D:\\riddle\\RiskLevel.xml", append);	//win下路径
 	}

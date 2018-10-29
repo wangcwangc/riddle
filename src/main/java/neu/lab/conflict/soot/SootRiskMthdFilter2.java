@@ -19,12 +19,14 @@ import soot.SootClass;
 import soot.Transform;
 import soot.util.Chain;
 
-/**has superDefine
+/**
+ * has superDefine
+ * 
  * @author asus
  *
  */
-public class SootRiskMthdFilter2 extends SootAna{
-	public void filterRiskMthds(DepJarJRisk depJarJRisk,Collection<String> mthds2test) {
+public class SootRiskMthdFilter2 extends SootAna {
+	public void filterRiskMthds(DepJarJRisk depJarJRisk, Collection<String> mthds2test) {
 		long start = System.currentTimeMillis();
 		try {
 			SootUtil.modifyLogOut();
@@ -48,6 +50,7 @@ public class SootRiskMthdFilter2 extends SootAna{
 		argsList.addAll(Arrays.asList(new String[] { "-p", "cg", "off", }));
 	}
 }
+
 class RiskMthdFilter2Tf extends SceneTransformer {
 
 	private Collection<String> mthds2test;
@@ -59,51 +62,56 @@ class RiskMthdFilter2Tf extends SceneTransformer {
 
 	@Override
 	protected void internalTransform(String arg0, Map<String, String> arg1) {
-		
+
 		MavenUtil.i().getLog().info("filter methods that have super define.");
 		filterRiskMthds();
-		
+
 	}
 
 	private void filterRiskMthds() {
-		
-		Iterator<String> ite = mthds2test.iterator();
-		while (ite.hasNext()) {
-			String testMthd = ite.next();
-			// <neu.lab.plug.testcase.homemade.b.B2: void m1()>
-			String[] pre_suf = testMthd.split(":");
-			String className = pre_suf[0].substring(1);// neu.lab.plug.testcase.homemade.b.B2
-			String mthdSuffix = pre_suf[1];// void m1()>
-			if(testMthd.contains("<init>")) {
+		try {
+			Iterator<String> ite = mthds2test.iterator();
+			while (ite.hasNext()) {
+				String testMthd = ite.next();
+				// <neu.lab.plug.testcase.homemade.b.B2: void m1()>
+				String[] pre_suf = testMthd.split(":");
+				String className = pre_suf[0].substring(1);// neu.lab.plug.testcase.homemade.b.B2
+				String mthdSuffix = pre_suf[1];// void m1()>
+				if (testMthd.contains("<init>")) {
 //				||testMthd.contains("<clinit>")
-				//keep construct method 
-				continue;
-			}
-			if (!Scene.v().containsClass(className)) {// weird class
-				MavenUtil.i().getLog().info("remove weird method:" + testMthd);
-				ite.remove();
-			} else if (hasSuperDefine(className, mthdSuffix)) {
+					// keep construct method
+					continue;
+				}
+				if (!Scene.v().containsClass(className)) {// weird class
+					MavenUtil.i().getLog().info("remove weird method:" + testMthd);
+					ite.remove();
+				} else if (hasSuperDefine(className, mthdSuffix)) {
 //				MavenUtil.i().getLog().info("remove father-implement-method:" + testMthd);
-				ite.remove();
-			}
+					ite.remove();
+				}
 //			//TODO1
 //			if("<org.sonatype.aether.util.graph.PreorderNodeListGenerator: java.lang.String getClassPath()>".equals(testMthd)) {
 //				MavenUtil.i().getLog().info("<org.sonatype.aether.util.graph.PreorderNodeListGenerator: java.lang.String getClassPath()>:"+hasSuperDefine(className, mthdSuffix)+Scene.v().containsClass(className));
 //			}
+			}
+		} catch (Exception e) {
+			MavenUtil.i().getLog().warn(e);
+		} finally {
+			MavenUtil.i().getLog().info("skip");
 		}
 	}
-	
+
 	private boolean hasSuperDefine(String className, String mthdSuffix) {
 		Set<SootClass> allSuper = new HashSet<SootClass>();
-		getSuper(Scene.v().getSootClass(className),allSuper);
-		for(SootClass superClass:allSuper) {
+		getSuper(Scene.v().getSootClass(className), allSuper);
+		for (SootClass superClass : allSuper) {
 			String fathMthdSig = "<" + superClass.getName() + ":" + mthdSuffix;
-			if (Scene.v().containsMethod(fathMthdSig)) 
+			if (Scene.v().containsMethod(fathMthdSig))
 				return true;
 		}
 		return false;
 	}
-	
+
 	private void getSuper(SootClass cls, Set<SootClass> allSuper) {
 		Set<SootClass> allDirectSuper = new HashSet<SootClass>();
 
@@ -124,6 +132,6 @@ class RiskMthdFilter2Tf extends SceneTransformer {
 				getSuper(superC, allSuper);
 			}
 		}
-		
+
 	}
 }

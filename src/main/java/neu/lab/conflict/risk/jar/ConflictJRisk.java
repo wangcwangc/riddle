@@ -84,7 +84,7 @@ public class ConflictJRisk {
 						isUsedDepJar = true;
 					}
 
-					Graph4distance distanceGraph = depJarJRisk.getGraph4distance();
+					Graph4distance distanceGraph = depJarJRisk.getGraph4distance(depJar);
 
 					if (distanceGraph.getAllNode().isEmpty()) {
 						MavenUtil.i().getLog().info("distanceGraph is empty");
@@ -135,7 +135,6 @@ public class ConflictJRisk {
 			noUseSet = true;
 		}
 		int riskLevel = 0;
-		System.out.println(noUseSet);
 		/*
 		 * 风险1：项目使用的jar包和不使用的jar包的风险方法集合都为空 风险2：项目使用的jar包风险方法集合为空，不使用的jar包都有风险方法
 		 * 风险3：项目使用的jar包风险方法集合不为空，不使用的jar包中有风险方法集合为空的jar包

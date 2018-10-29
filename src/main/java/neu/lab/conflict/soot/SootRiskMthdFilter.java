@@ -18,8 +18,9 @@ import soot.SootClass;
 import soot.SootMethod;
 import soot.Transform;
 
-/**filter for the riskMethod whose class exists in usedJar.
- * hasFatherImpl
+/**
+ * filter for the riskMethod whose class exists in usedJar. hasFatherImpl
+ * 
  * @author asus
  *
  */
@@ -43,8 +44,10 @@ public class SootRiskMthdFilter extends SootAna {
 		long runtime = (System.currentTimeMillis() - start) / 1000;
 		GlobalVar.time2filterRiskMthd += runtime;
 	}
+
 	/**
 	 * 多态过滤方法1
+	 * 
 	 * @param mthds2test
 	 * @param depJar
 	 */
@@ -89,22 +92,29 @@ class RiskMthdFilterTf extends SceneTransformer {
 	}
 
 	private void filterRiskMthds() {
+		try {
 
-		Iterator<String> ite = mthds2test.iterator();
-		while (ite.hasNext()) {
-			String testMthd = ite.next();
-			// <neu.lab.plug.testcase.homemade.b.B2: void m1()>
-			String[] pre_suf = testMthd.split(":");
-			String className = pre_suf[0].substring(1);// neu.lab.plug.testcase.homemade.b.B2 去掉<
-			String mthdSuffix = pre_suf[1];//  void m1()>
-			if (!Scene.v().containsClass(className)) {// weird class
+			Iterator<String> ite = mthds2test.iterator();
+			while (ite.hasNext()) {
+				String testMthd = ite.next();
+				// <neu.lab.plug.testcase.homemade.b.B2: void m1()>
+				String[] pre_suf = testMthd.split(":");
+				String className = pre_suf[0].substring(1);// neu.lab.plug.testcase.homemade.b.B2 去掉<
+				String mthdSuffix = pre_suf[1];// void m1()>
+				if (!Scene.v().containsClass(className)) {// weird class
 //				MavenUtil.i().getLog().info("remove weird method:" + testMthd);
 //				ite.remove();
-			} else if (hasFatherImpl(className, mthdSuffix)) {
-				// MavenUtil.i().getLog().info("remove father-implement-method:" + testMthd);
-				ite.remove();
+				} else if (hasFatherImpl(className, mthdSuffix)) {
+					// MavenUtil.i().getLog().info("remove father-implement-method:" + testMthd);
+					ite.remove();
+				}
+				// MavenUtil.i().getLog().info(hasFatherImpl(className, mthdSuffix)+"");
 			}
-			// MavenUtil.i().getLog().info(hasFatherImpl(className, mthdSuffix)+"");
+
+		} catch (Exception e) {
+			MavenUtil.i().getLog().warn(e);
+		} finally {
+			MavenUtil.i().getLog().info("skip");
 		}
 	}
 

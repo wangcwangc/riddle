@@ -142,7 +142,7 @@ public class ConflictJRisk {
 		 */
 		if (useSet && noUseSet && noUseSetNum == isNotUsedDepJarMapSize) {
 			riskLevel = 1;
-		} else if (useSet && !noUseSet) {
+		} else if (useSet && noUseSet) {
 			riskLevel = 2;
 		} else if (!useSet && noUseSet) {
 			riskLevel = 3;

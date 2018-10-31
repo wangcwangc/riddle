@@ -96,9 +96,7 @@ class RiskMthdFilter2Tf extends SceneTransformer {
 			}
 		} catch (Exception e) {
 			MavenUtil.i().getLog().warn(e);
-		} finally {
-			MavenUtil.i().getLog().info("skip");
-		}
+		} 
 	}
 
 	private boolean hasSuperDefine(String className, String mthdSuffix) {

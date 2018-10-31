@@ -79,13 +79,13 @@ public class DepJarJRisk {
 		thrownMthds = conflictRisk.getUsedDepJar().getRiskMthds(depJar.getAllMthd());
 		MavenUtil.i().getLog().info("riskMethod size before filter: " + thrownMthds.size());
 //			MavenUtil.i().getLog().info("contains : " + thrownMthds.contains("<com.fasterxml.jackson.databind.node.JsonNodeFactory: com.fasterxml.jackson.databind.node.NumericNode numberNode(java.math.BigInteger)>"));
-//		if (thrownMthds.size() > 0)
-//			new SootRiskMthdFilter().filterRiskMthds(thrownMthds);
-//		MavenUtil.i().getLog().info("riskMethod size after filter1: " + thrownMthds.size());
+		if (thrownMthds.size() > 0)
+			new SootRiskMthdFilter().filterRiskMthds(thrownMthds);
+		MavenUtil.i().getLog().info("riskMethod size after filter1: " + thrownMthds.size());
 ////			MavenUtil.i().getLog().info("contains : " + thrownMthds.contains("<com.fasterxml.jackson.databind.node.JsonNodeFactory: com.fasterxml.jackson.databind.node.NumericNode numberNode(java.math.BigInteger)>"));
-//		if (thrownMthds.size() > 0)
-//			new SootRiskMthdFilter2().filterRiskMthds(this, thrownMthds);
-//		MavenUtil.i().getLog().info("riskMethod size after filter2: " + thrownMthds.size());
+		if (thrownMthds.size() > 0)
+			new SootRiskMthdFilter2().filterRiskMthds(this, thrownMthds);
+		MavenUtil.i().getLog().info("riskMethod size after filter2: " + thrownMthds.size());
 //		MavenUtil.i().getLog().info("contains : " + thrownMthds.contains(
 //				"<org.apache.http.impl.client.CloseableHttpClient: org.apache.http.client.methods.CloseableHttpResponse execute(org.apache.http.HttpHost,org.apache.http.HttpRequest,org.apache.http.protocol.HttpContext)>"));
 //		MavenUtil.i().getLog().info("contains : " + thrownMthds.contains(
@@ -113,11 +113,11 @@ public class DepJarJRisk {
 		MavenUtil.i().getLog().info("riskMethod size before filter: " + thrownMthds.size());
 //		MavenUtil.i().getLog().info("contains : " + thrownMthds.contains("<com.fasterxml.jackson.databind.node.JsonNodeFactory: com.fasterxml.jackson.databind.node.NumericNode numberNode(java.math.BigInteger)>"));
 		if (thrownMthds.size() > 0)
-			new SootRiskMthdFilter().filterRiskMthds(thrownMthds, enterDepJar);
+				new SootRiskMthdFilter().filterRiskMthds(thrownMthds, enterDepJar);
 		MavenUtil.i().getLog().info("riskMethod size after filter1: " + thrownMthds.size());
 //		MavenUtil.i().getLog().info("contains : " + thrownMthds.contains("<com.fasterxml.jackson.databind.node.JsonNodeFactory: com.fasterxml.jackson.databind.node.NumericNode numberNode(java.math.BigInteger)>"));
 		if (thrownMthds.size() > 0)
-			new SootRiskMthdFilter2().filterRiskMthds(this, thrownMthds);
+				new SootRiskMthdFilter2().filterRiskMthds(this, thrownMthds);
 		MavenUtil.i().getLog().info("riskMethod size after filter2: " + thrownMthds.size());
 		MavenUtil.i().getLog().info("contains : " + thrownMthds.contains(
 				"<org.apache.http.impl.client.CloseableHttpClient: org.apache.http.client.methods.CloseableHttpResponse execute(org.apache.http.HttpHost,org.apache.http.HttpRequest,org.apache.http.protocol.HttpContext)>"));
@@ -232,8 +232,8 @@ public class DepJarJRisk {
 	}
 
 	/**
-	 * 得到距离图
-	 * 多态
+	 * 得到距离图 多态
+	 * 
 	 * @return
 	 */
 	public Graph4distance getGraph4distance(DepJar useDepJar) {
@@ -261,7 +261,7 @@ public class DepJarJRisk {
 		// }
 		return graph4distance;
 	}
-	
+
 	public Graph4path getGraph4mthdPath() {
 //		if (getThrownMthds().size() > 0) {
 //			IGraph iGraph = SootJRiskCg.i().getGraph4branch(this,new JRiskMthdPathCgTf(this));

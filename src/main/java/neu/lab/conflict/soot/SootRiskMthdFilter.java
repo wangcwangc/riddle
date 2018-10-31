@@ -113,24 +113,26 @@ class RiskMthdFilterTf extends SceneTransformer {
 
 		} catch (Exception e) {
 			MavenUtil.i().getLog().warn(e);
-		} finally {
-			MavenUtil.i().getLog().info("skip");
-		}
+		} 
 	}
 
 	private boolean hasFatherImpl(String className, String mthdSuffix) {
-		SootClass sootCls = Scene.v().getSootClass(className);
-		while (sootCls.hasSuperclass()) {
-			sootCls = sootCls.getSuperclass();
-			String fathMthdSig = "<" + sootCls.getName() + ":" + mthdSuffix;
-			// MavenUtil.i().getLog().info("super:"+fathMthdSig);
-			if (Scene.v().containsMethod(fathMthdSig)) {
-				// MavenUtil.i().getLog().info("contains");
-				SootMethod fatherMthd = Scene.v().getMethod(fathMthdSig);
-				if (fatherMthd.isConcrete() || fatherMthd.isNative()) {
-					return true;
+		try {
+			SootClass sootCls = Scene.v().getSootClass(className);
+			while (sootCls.hasSuperclass()) {
+				sootCls = sootCls.getSuperclass();
+				String fathMthdSig = "<" + sootCls.getName() + ":" + mthdSuffix;
+				// MavenUtil.i().getLog().info("super:"+fathMthdSig);
+				if (Scene.v().containsMethod(fathMthdSig)) {
+					// MavenUtil.i().getLog().info("contains");
+					SootMethod fatherMthd = Scene.v().getMethod(fathMthdSig);
+					if (fatherMthd.isConcrete() || fatherMthd.isNative()) {
+						return true;
+					}
 				}
 			}
+		} catch (Exception e) {
+			MavenUtil.i().getLog().warn(e);
 		}
 		return false;
 	}

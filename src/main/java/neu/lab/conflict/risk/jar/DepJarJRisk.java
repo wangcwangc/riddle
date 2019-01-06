@@ -113,11 +113,11 @@ public class DepJarJRisk {
 		MavenUtil.i().getLog().info("riskMethod size before filter: " + thrownMthds.size());
 //		MavenUtil.i().getLog().info("contains : " + thrownMthds.contains("<com.fasterxml.jackson.databind.node.JsonNodeFactory: com.fasterxml.jackson.databind.node.NumericNode numberNode(java.math.BigInteger)>"));
 		if (thrownMthds.size() > 0)
-				new SootRiskMthdFilter().filterRiskMthds(thrownMthds, enterDepJar);
+			new SootRiskMthdFilter().filterRiskMthds(thrownMthds, enterDepJar);
 		MavenUtil.i().getLog().info("riskMethod size after filter1: " + thrownMthds.size());
 //		MavenUtil.i().getLog().info("contains : " + thrownMthds.contains("<com.fasterxml.jackson.databind.node.JsonNodeFactory: com.fasterxml.jackson.databind.node.NumericNode numberNode(java.math.BigInteger)>"));
 		if (thrownMthds.size() > 0)
-				new SootRiskMthdFilter2().filterRiskMthds(this, thrownMthds);
+			new SootRiskMthdFilter2().filterRiskMthds(this, thrownMthds);
 		MavenUtil.i().getLog().info("riskMethod size after filter2: " + thrownMthds.size());
 		MavenUtil.i().getLog().info("contains : " + thrownMthds.contains(
 				"<org.apache.http.impl.client.CloseableHttpClient: org.apache.http.client.methods.CloseableHttpResponse execute(org.apache.http.HttpHost,org.apache.http.HttpRequest,org.apache.http.protocol.HttpContext)>"));
@@ -206,28 +206,20 @@ public class DepJarJRisk {
 	 * @return
 	 */
 	public Graph4distance getGraph4distance() {
-		// if (graph4distance == null) {
-		Set<String> thrownmethods = getThrownMthds();
-		if (thrownmethods.size() > 0) {
-//				for(String riskMthd:getThrownMthds()) {
-//					System.out.println(riskMthd);
-//				}
-//			for (String mthd : getThrownMthds()) {
-//				MavenUtil.i().getLog().info("first riskmthd:" + mthd);
-//				// 测试
-//			}
-			// MavenUtil.i().getLog().info("first riskmthd:" +
-			// getThrownMthds().iterator().next());
-			IGraph iGraph = SootJRiskCg.i().getGraph4distance(this, new JRiskDistanceCgTf(this, thrownmethods));
-			if (iGraph != null) {
-				graph4distance = (Graph4distance) iGraph;
+		if (graph4distance == null) {
+			Set<String> thrownmethods = getThrownMthds();
+			if (thrownmethods.size() > 0) {
+				IGraph iGraph = SootJRiskCg.i().getGraph4distance(this, new JRiskDistanceCgTf(this, thrownmethods));
+				if (iGraph != null) {
+					graph4distance = (Graph4distance) iGraph;
+				} else {
+					graph4distance = new Graph4distance(new HashMap<String, Node4distance>(),
+							new ArrayList<MethodCall>());
+				}
 			} else {
 				graph4distance = new Graph4distance(new HashMap<String, Node4distance>(), new ArrayList<MethodCall>());
 			}
-		} else {
-			graph4distance = new Graph4distance(new HashMap<String, Node4distance>(), new ArrayList<MethodCall>());
 		}
-		// }
 		return graph4distance;
 	}
 

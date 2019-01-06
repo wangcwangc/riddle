@@ -3,6 +3,8 @@ package neu.lab.conflict.writer;
 import java.io.CharArrayWriter;
 import java.io.FileWriter;
 import java.io.Writer;
+import java.util.HashMap;
+import java.util.Map;
 import java.util.Set;
 
 import org.dom4j.Document;
@@ -75,17 +77,21 @@ public class RiskLevelWriter {
 		element.addAttribute("versions", conflict.getVersions().toString());
 		ConflictJRisk conflictJRisk = conflict.getJRisk();
 		int riskLevel = 0;
+		String safeJar = "";
 		Set<String> usedRiskMethods = conflictJRisk.getConflictLevel();
 		if (subdivisionLevel) {
-			riskLevel = conflictJRisk.getRiskLevel();
+			Map<Integer, String> result = conflictJRisk.getRiskLevel();
+			riskLevel = result.keySet().iterator().next();
+			safeJar = result.get(riskLevel);
 		} else {
 			if (usedRiskMethods.isEmpty()) {
 				riskLevel = 1;
+				safeJar = conflict.getUsedDepJar().toString();
 			} else {
 				riskLevel = 3;
 			}
 		}
-		
+
 		element.addAttribute("riskLevel", riskLevel + "");
 
 		element.add(AddPath(conflict));
@@ -105,6 +111,9 @@ public class RiskLevelWriter {
 		} else if (riskLevel == 4) {
 			risksEle.addAttribute("tip", "methods would be referenced but not be loaded !");
 		}
+		
+		Element safeJarElement = element.addElement("SafeJar");
+		safeJarElement.addText(safeJar);
 		return elements;
 	}
 

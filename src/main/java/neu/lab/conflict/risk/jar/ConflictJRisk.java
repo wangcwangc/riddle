@@ -61,7 +61,7 @@ public class ConflictJRisk {
 	/**
 	 * 可以细分等级1, 2，3，4 method:得到风险等级 name:wangchao time:2018-9-29 16:27:21
 	 */
-	public int getRiskLevel() {
+	public Map<Integer, String> getRiskLevel() {
 		boolean isUsedDepJar = false; // 记录参与运算的depJar是不是本项目被使用的usedDepJar
 		DepJar usedDepJar = conflict.getUsedDepJar(); // 记录usedJar
 		Set<DepJar> depJars = conflict.getDepJars();
@@ -69,6 +69,7 @@ public class ConflictJRisk {
 		Map<String, Map<String, Set<String>>> isNotUsedDepJarMap = new HashMap<String, Map<String, Set<String>>>(); // 未被使用的usedDepJars风险方法集合
 		Map<String, Set<String>> nowUsedDepJarMethod = null; // 当前DepJar风险方法集合
 		Set<String> bottomMethods = null;
+		Map<Integer, String> result = new HashMap<Integer, String>();
 		for (DepJar depJar : depJars) {
 			nowUsedDepJarMethod = new HashMap<String, Set<String>>();
 			// 初始化
@@ -114,6 +115,7 @@ public class ConflictJRisk {
 		boolean noUseSet = false;
 		int isNotUsedDepJarMapSize = isNotUsedDepJarMap.entrySet().size();
 		int noUseSetNum = 0;
+		String jarSig = null;
 		if (usedDepJarSet.isEmpty()) {
 			useSet = true;
 		}
@@ -129,10 +131,15 @@ public class ConflictJRisk {
 			}
 			if (isnot) {
 				noUseSetNum++;
+				jarSig = entrys.getKey();
 			}
 		}
 		if (noUseSetNum > 0) {
 			noUseSet = true;
+		}
+		
+		if (useSet) {
+			jarSig = usedDepJar.toString();
 		}
 		int riskLevel = 0;
 		/*
@@ -142,7 +149,7 @@ public class ConflictJRisk {
 		 */
 		if (useSet && noUseSet && noUseSetNum == isNotUsedDepJarMapSize) {
 			riskLevel = 1;
-		} else if (useSet && noUseSet) {
+		} else if (useSet) {
 			riskLevel = 2;
 		} else if (!useSet && noUseSet) {
 			riskLevel = 3;
@@ -153,7 +160,8 @@ public class ConflictJRisk {
 		this.setUsedDepJar(usedDepJar);
 		AllCls.init(DepJars.i(), usedDepJar);
 		AllRefedCls.init(usedDepJar);
-		return riskLevel;
+		result.put(riskLevel, jarSig);
+		return result;
 	}
 
 	/**

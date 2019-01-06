@@ -131,6 +131,10 @@ public class Conflict {
 		return str;
 	}
 
+	public String getConflict() {
+		String str = groupId + "." + artifactId + "+" + artifactId;
+		return str;
+	}
 	public String getGroupId() {
 		return groupId;
 	}

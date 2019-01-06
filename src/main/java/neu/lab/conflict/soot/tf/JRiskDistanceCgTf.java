@@ -60,46 +60,61 @@ public class JRiskDistanceCgTf extends JRiskCgTf {
 		if (graph == null) {
 			MavenUtil.i().getLog().info("start form graph...");
 			// get call-graph.
-			Map<String, Node4distance> name2node = new HashMap<String, Node4distance>();
-			List<MethodCall> mthdRlts = new ArrayList<MethodCall>();
-			
-			CallGraph cg = Scene.v().getCallGraph();//得到图
-			
-//			Iterator<Edge> ite = getIteratorForEdge();//得到边集合
+			Map<String, Node4distance> name2node = new HashMap<String, Node4distance>(16384);
+			// 初始化20000大小
+
+			List<MethodCall> mthdRlts = new ArrayList<MethodCall>(16384);
+
+			CallGraph cg = Scene.v().getCallGraph();// 得到图
+
 			Iterator<Edge> ite = cg.iterator();
+
+			long start = System.currentTimeMillis();
 			
 			while (ite.hasNext()) {
-				Edge edge = ite.next();
 
-				String srcMthdName = edge.src().getSignature();//源方法名
-				String tgtMthdName = edge.tgt().getSignature();//目标方法名
-				// //TODO1
-				// if("<com.fasterxml.jackson.core.JsonFactory: boolean
-				// requiresPropertyOrdering()>".equals(tgtMthdName)) {
-				// MavenUtil.i().getLog().info("srcMthdName:"+srcMthdName);
-				// }
-				String srcClsName = edge.src().getDeclaringClass().getName();//源方法的类名
-				String tgtClsName = edge.tgt().getDeclaringClass().getName();//目标方法的类名
-				if (edge.src().isJavaLibraryMethod() || edge.tgt().isJavaLibraryMethod()) {
+				Edge edge = ite.next();
+				SootMethod source = edge.src();
+				SootMethod target = edge.tgt();
+				if (source.isJavaLibraryMethod() || target.isJavaLibraryMethod()) {
 					// filter relation contains javaLibClass 过滤掉JavaLib的类
-				} else if (conflictJarClses.contains(SootUtil.mthdSig2cls(srcMthdName))
-						&& conflictJarClses.contains(SootUtil.mthdSig2cls(tgtMthdName))) {
-					// filter relation inside conflictJar 过滤掉conflictJar中的类
 				} else {
-					if (!name2node.containsKey(srcMthdName)) {
-						name2node.put(srcMthdName, new Node4distance(srcMthdName, isHostClass(srcClsName)&&!edge.src().isPrivate(),
-								riskMthds.contains(srcMthdName), getBranchNum(edge.src().getSignature())));
+					if (source.isConcrete() && target.isConcrete()) {
+						String srcMthdName = source.getSignature();// 源方法名
+						String tgtMthdName = target.getSignature();// 目标方法名
+						String srcClsName = source.getDeclaringClass().getName();// 源方法的类名
+						String tgtClsName = target.getDeclaringClass().getName();// 目标方法的类名
+
+						if (conflictJarClses.contains(SootUtil.mthdSig2cls(srcMthdName))
+								&& conflictJarClses.contains(SootUtil.mthdSig2cls(tgtMthdName))) {
+							// filter relation inside conflictJar 过滤掉conflictJar中的类
+						} else {
+							if (!name2node.containsKey(srcMthdName)) {
+								name2node.put(srcMthdName, new Node4distance(srcMthdName,
+										isHostClass(srcClsName) && !edge.src().isPrivate(),
+										riskMthds.contains(srcMthdName), getBranchNum(edge.src().getSignature())));
+							}
+							if (!name2node.containsKey(tgtMthdName)) {
+								name2node.put(tgtMthdName, new Node4distance(tgtMthdName,
+										isHostClass(tgtClsName) && !edge.tgt().isPrivate(),
+										riskMthds.contains(tgtMthdName), getBranchNum(edge.tgt().getSignature())));
+							}
+							mthdRlts.add(new MethodCall(srcMthdName, tgtMthdName));
+						}
 					}
-					if (!name2node.containsKey(tgtMthdName)) {
-						name2node.put(tgtMthdName, new Node4distance(tgtMthdName,isHostClass(tgtClsName)&&!edge.tgt().isPrivate(),
-								riskMthds.contains(tgtMthdName), getBranchNum(edge.tgt().getSignature())));
-					}
-					mthdRlts.add(new MethodCall(srcMthdName, tgtMthdName));
 				}
 			}
+			
 			graph = new Graph4distance(name2node, mthdRlts);
+
+			// 释放内存
+			cg = null;
+			System.gc();
+
 			MavenUtil.i().getLog().info("end form graph.");
+			MavenUtil.i().getLog().info("form graph time:" + (System.currentTimeMillis() - start));
 		}
+
 	}
 
 	private int getBranchNum(String mthd) {

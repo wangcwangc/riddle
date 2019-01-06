@@ -17,5 +17,4 @@ public class PrintRiskLevelMojo extends ConflictMojo {
 //		riskLevelWriter.writeRiskLevelXML("/Users/wangchao/Develop/neu/", append);	//mac下路径
 		//riskLevelWriter.writeRiskLevel("D:\\riddle\\RiskLevel.xml", append);	//win下路径
 	}
-
 }

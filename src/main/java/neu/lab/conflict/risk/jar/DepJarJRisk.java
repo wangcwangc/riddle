@@ -18,11 +18,14 @@ import neu.lab.conflict.graph.IBook;
 import neu.lab.conflict.graph.IGraph;
 import neu.lab.conflict.graph.IRecord;
 import neu.lab.conflict.graph.Node4distance;
+import neu.lab.conflict.graph.Node4path;
 import neu.lab.conflict.graph.Record4distance;
+import neu.lab.conflict.graph.Record4path;
 import neu.lab.conflict.soot.SootJRiskCg;
 import neu.lab.conflict.soot.SootRiskMthdFilter;
 import neu.lab.conflict.soot.SootRiskMthdFilter2;
 import neu.lab.conflict.soot.tf.JRiskDistanceCgTf;
+import neu.lab.conflict.soot.tf.JRiskMthdPathCgTf;
 import neu.lab.conflict.util.Conf;
 import neu.lab.conflict.util.MavenUtil;
 import neu.lab.conflict.vo.DepJar;
@@ -36,7 +39,7 @@ import neu.lab.conflict.vo.MethodCall;
  */
 public class DepJarJRisk {
 	private DepJar depJar; // 依赖jar
-	private ConflictJRisk conflictRisk; // 有风险的冲突jar
+	private ConflictJRisk conflictRisk; // 
 	private Set<String> thrownMthds; // 抛弃的方法
 	// private Set<String> rchedMthds;
 	private Graph4distance graph4distance; // 图
@@ -168,6 +171,18 @@ public class DepJarJRisk {
 		}
 		return bottomMethods;
 	}
+	
+	public Set<String> getMethodBottomForPath(Map<String, IBook> books) {
+		Set<String> bottomMethods = new HashSet<String>();
+		for (IBook book : books.values()) {
+			// MavenUtil.i().getLog().info("book:"+book.getNodeName());
+			for (IRecord iRecord : book.getRecords()) {
+				Record4path record = (Record4path) iRecord;
+				bottomMethods.add(record.getName());
+			}
+		}
+		return bottomMethods;
+	}
 
 	public Collection<String> getPrcDirPaths() throws Exception {
 		List<String> classpaths;
@@ -200,6 +215,9 @@ public class DepJarJRisk {
 		return depJar;
 	}
 
+	public DepJar getUsedJar() {
+		return conflictRisk.getUsedDepJar();
+	}
 	/**
 	 * 得到距离图
 	 * 
@@ -209,7 +227,7 @@ public class DepJarJRisk {
 		if (graph4distance == null) {
 			Set<String> thrownmethods = getThrownMthds();
 			if (thrownmethods.size() > 0) {
-				IGraph iGraph = SootJRiskCg.i().getGraph4distance(this, new JRiskDistanceCgTf(this, thrownmethods));
+				IGraph iGraph = SootJRiskCg.i().getGraph(this, new JRiskDistanceCgTf(this, thrownmethods));
 				if (iGraph != null) {
 					graph4distance = (Graph4distance) iGraph;
 				} else {
@@ -241,7 +259,7 @@ public class DepJarJRisk {
 //			}
 			// MavenUtil.i().getLog().info("first riskmthd:" +
 			// getThrownMthds().iterator().next());
-			IGraph iGraph = SootJRiskCg.i().getGraph4distance(this, new JRiskDistanceCgTf(this, thrownmethods));
+			IGraph iGraph = SootJRiskCg.i().getGraph(this, new JRiskDistanceCgTf(this, thrownmethods));
 			if (iGraph != null) {
 				graph4distance = (Graph4distance) iGraph;
 			} else {
@@ -255,13 +273,14 @@ public class DepJarJRisk {
 	}
 
 	public Graph4path getGraph4mthdPath() {
-//		if (getThrownMthds().size() > 0) {
-//			IGraph iGraph = SootJRiskCg.i().getGraph4branch(this,new JRiskMthdPathCgTf(this));
-//			if(iGraph!=null)
-//				return (Graph4path)iGraph;
-//		}
-//		return new Graph4path(new HashMap<String, Node4path>(), new ArrayList<MethodCall>());
-		return getGraph4distance().getGraph4path();
+		Set<String> thrownmethods = getThrownMthds();
+		if (thrownmethods.size() > 0) {
+			IGraph iGraph = SootJRiskCg.i().getGraph(this,new JRiskMthdPathCgTf(this, thrownmethods));
+			if(iGraph!=null)
+				return (Graph4path)iGraph;
+		}
+		return new Graph4path(new HashMap<String, Node4path>(), new ArrayList<MethodCall>());
+//		return getGraph4distance().getGraph4path();
 	}
 
 	private Map<String, IBook> getBooks4distance() {

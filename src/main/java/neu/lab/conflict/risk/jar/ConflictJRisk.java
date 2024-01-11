@@ -13,6 +13,7 @@ import neu.lab.conflict.container.AllRefedCls;
 import neu.lab.conflict.container.DepJars;
 import neu.lab.conflict.graph.Dog;
 import neu.lab.conflict.graph.Graph4distance;
+import neu.lab.conflict.graph.Graph4path;
 import neu.lab.conflict.graph.IBook;
 import neu.lab.conflict.graph.Dog.Strategy;
 import neu.lab.conflict.util.Conf;
@@ -137,7 +138,7 @@ public class ConflictJRisk {
 		if (noUseSetNum > 0) {
 			noUseSet = true;
 		}
-		
+
 		if (useSet) {
 			jarSig = usedDepJar.toString();
 		}
@@ -180,5 +181,43 @@ public class ConflictJRisk {
 			usedRiskMethods.addAll(bottomMethods);
 		}
 		return usedRiskMethods;
+	}
+
+//	 public Set<String> getReachRiskMethods(){
+//		 Set<String> usedRiskMethods = new HashSet<String>(); // 被使用的usedDepJar风险方法集合
+//		 Map<String, IBook> pathBooks = null;
+//			for (DepJarJRisk depJarJRisk : jarRisks) {
+//				 Graph4path pathGraph = depJarJRisk.getGraph4mthdPath();
+//				 if (Conf.fromHostSearch) {
+//					 pathBooks = new Dog(pathGraph).findRlt(pathGraph.getHostNds(),
+//								Conf.DOG_DEP_FOR_DIS, Strategy.NOT_RESET_BOOK);
+//					 usedRiskMethods.add("fromHostSearch");
+//				 }else {
+//					 pathBooks = new Dog(pathGraph).findRlt(pathGraph.getMiddleNodes(),
+//								Conf.DOG_DEP_FOR_DIS, Strategy.NOT_RESET_BOOK);
+//					 usedRiskMethods.add("notFromHostSearch");
+//				 }
+//				Set<String> bottomMethods = depJarJRisk.getMethodBottomForPath(pathBooks);
+//				usedRiskMethods.addAll(bottomMethods);
+//			}
+//			return usedRiskMethods;
+//	 }
+	public int getReachRiskMethods() {
+		Map<String, IBook> pathBooks = null;
+		for (DepJarJRisk depJarJRisk : jarRisks) {
+			Graph4path pathGraph = depJarJRisk.getGraph4mthdPath();
+			pathBooks = new Dog(pathGraph).findRlt(pathGraph.getMiddleNodes(), Conf.DOG_DEP_FOR_DIS,
+					Strategy.NOT_RESET_BOOK);
+			if (depJarJRisk.getMethodBottomForPath(pathBooks).size() > 0) {
+				return 2;
+			} else {
+				pathBooks = new Dog(pathGraph).findRlt(pathGraph.getHostNds(), Conf.DOG_DEP_FOR_DIS,
+						Strategy.NOT_RESET_BOOK);
+				if (depJarJRisk.getMethodBottomForPath(pathBooks).size() > 0) {
+					return 3;
+				}
+			}
+		}
+		return 3;
 	}
 }

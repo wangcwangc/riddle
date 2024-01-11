@@ -22,7 +22,8 @@ public class Conf {
 	public static int DOG_DEP_FOR_PATH ;//final path may be larger than PATH_DEP when child book is existed.
 	public static String callConflict;
 	public static boolean findAllpath;
-	
+	public static boolean subdivisionLevel;
+	public static boolean fromHostSearch;
 	
 	public static boolean ONLY_GET_SIMPLE = false;
 	

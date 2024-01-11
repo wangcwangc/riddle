@@ -57,7 +57,7 @@ public class DepJars {
 					hostDepJar = depJar;
 				}
 			}
-			MavenUtil.i().getLog().warn("depjar host is " + hostDepJar.toString()); //测试输出
+			MavenUtil.i().getLog().info("depjar host is " + hostDepJar.toString()); //测试输出
 		}
 		return hostDepJar;
 	}

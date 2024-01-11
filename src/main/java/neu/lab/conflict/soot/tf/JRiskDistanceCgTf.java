@@ -6,11 +6,13 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
+import java.util.concurrent.CopyOnWriteArrayList;
 
 import neu.lab.conflict.GlobalVar;
 import neu.lab.conflict.graph.Graph4distance;
 import neu.lab.conflict.graph.Node4distance;
 import neu.lab.conflict.risk.jar.DepJarJRisk;
+import neu.lab.conflict.util.Conf;
 import neu.lab.conflict.util.MavenUtil;
 import neu.lab.conflict.util.SootUtil;
 import neu.lab.conflict.vo.MethodCall;
@@ -27,25 +29,27 @@ public class JRiskDistanceCgTf extends JRiskCgTf {
 
 	private static CallGraph instance = null;
 //	private static Iterator<Edge> iterator = null;
-	
+
 	public JRiskDistanceCgTf(DepJarJRisk depJarJRisk) {
 		super(depJarJRisk);
 	}
+
 	/**
 	 * 重构函数
+	 * 
 	 * @param depJarJRisk
 	 */
 	public JRiskDistanceCgTf(DepJarJRisk depJarJRisk, Set<String> thrownmethods) {
 		super(depJarJRisk, thrownmethods);
 	}
-	
+
 	public static CallGraph getThisCallGraph() {
-		if(instance == null) {
-			instance = Scene.v().getCallGraph();//得到图
+		if (instance == null) {
+			instance = Scene.v().getCallGraph();// 得到图
 		}
 		return instance;
 	}
-	
+
 //	public static Iterator<Edge> getIteratorForEdge(){
 //		if (iterator == null) {
 //			System.out.println("cg null");
@@ -60,22 +64,31 @@ public class JRiskDistanceCgTf extends JRiskCgTf {
 		if (graph == null) {
 			MavenUtil.i().getLog().info("start form graph...");
 			// get call-graph.
-			Map<String, Node4distance> name2node = new HashMap<String, Node4distance>(16384);
+			Map<String, Node4distance> name2node = new HashMap<String, Node4distance>();
 			// 初始化20000大小
 
-			List<MethodCall> mthdRlts = new ArrayList<MethodCall>(16384);
-
-			CallGraph cg = Scene.v().getCallGraph();// 得到图
-
+			List<MethodCall> mthdRlts = new ArrayList<MethodCall>();
+			CallGraph cg = null;
+			if (!Conf.subdivisionLevel) {
+				cg = getThisCallGraph();
+			} else {
+				cg = Scene.v().getCallGraph();// 得到图
+			}
+			 
 			Iterator<Edge> ite = cg.iterator();
 
 			long start = System.currentTimeMillis();
-			
+
+			Edge edge = null;
+			SootMethod source = null;
+			SootMethod target = null;
+
 			while (ite.hasNext()) {
 
-				Edge edge = ite.next();
-				SootMethod source = edge.src();
-				SootMethod target = edge.tgt();
+				edge = ite.next();
+				source = edge.src();
+				target = edge.tgt();
+
 				if (source.isJavaLibraryMethod() || target.isJavaLibraryMethod()) {
 					// filter relation contains javaLibClass 过滤掉JavaLib的类
 				} else {
@@ -104,10 +117,9 @@ public class JRiskDistanceCgTf extends JRiskCgTf {
 					}
 				}
 			}
-			
+
 			graph = new Graph4distance(name2node, mthdRlts);
 
-			// 释放内存
 			cg = null;
 			System.gc();
 
@@ -158,12 +170,14 @@ public class JRiskDistanceCgTf extends JRiskCgTf {
 	@Override
 	protected void initMthd2branch() {
 		mthd2branch = new HashMap<String, Integer>();
+		List<SootMethod> methods = new CopyOnWriteArrayList<SootMethod>();
 		for (SootClass sootClass : Scene.v().getApplicationClasses()) {
-			List<SootMethod> mthds = new ArrayList<SootMethod>();
-			mthds.addAll(sootClass.getMethods());
-			for (SootMethod method : mthds) {
+//			methods = sootClass.getMethods();
+			methods.addAll(sootClass.getMethods());
+			for (SootMethod method : methods) {
 				mthd2branch.put(method.getSignature(), calBranchNum(method));
 			}
+			methods.clear();
 		}
 	}
 }

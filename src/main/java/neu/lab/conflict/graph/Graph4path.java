@@ -36,6 +36,19 @@ public class Graph4path implements IGraph{
 		return hostNds;
 	}
 	
+	public Set<String> getMiddleNodes() {
+		Set<String> middleNodes = new HashSet<String>();
+		for (Node4path node : name2node.values()) {
+			if (node.isHostNode() || node.isBelongConflictJarNode()) {
+				
+			}
+			else{
+				middleNodes.add(node.getName());
+			}
+		}
+		return middleNodes;
+	}
+	
 	/**nodes in nds2remain will be remain.
 	 * @param nds2remain
 	 */

@@ -93,6 +93,10 @@ public abstract class ConflictMojo extends AbstractMojo {
 	@Parameter(property = "subdivisionLevel", defaultValue = "false")
 	public boolean subdivisionLevel;
 	
+	//设置是否从根节点出发
+	@Parameter(property = "fromHostSearch", defaultValue = "true")
+	public boolean fromHostSearch;
+		
 	@Parameter(property = "findAllPath")
 	public boolean findAllPath = false;
 
@@ -109,6 +113,8 @@ public abstract class ConflictMojo extends AbstractMojo {
 		Conf.DOG_DEP_FOR_PATH = pathDepth;
 		Conf.callConflict = callConflict;
 		Conf.findAllpath = findAllPath;
+		Conf.subdivisionLevel = subdivisionLevel;
+		Conf.fromHostSearch = fromHostSearch;
 		UserConf.setOutDir(resultPath);
 		GlobalVar.useAllJar = useAllJar;
 		ShellConfig.mvnRep = MavenUtil.i().getMvnRep();
@@ -137,7 +143,7 @@ public abstract class ConflictMojo extends AbstractMojo {
 			}
 		}
 
-		MavenUtil.i().getLog().warn("tree size:" + DepJars.i().getAllDepJar().size() + ", used size:" + systemSize
+		MavenUtil.i().getLog().info("tree size:" + DepJars.i().getAllDepJar().size() + ", used size:" + systemSize
 				+ ", usedFile size:" + systemFileSize / 1000);
 
 		//		if (DepJars.i().getAllDepJar().size() <= 50||systemFileSize / 1000>20000) {

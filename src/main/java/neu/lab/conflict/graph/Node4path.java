@@ -12,6 +12,7 @@ public class Node4path implements INode {
 	private String name;
 	private boolean isHost;
 	private boolean isRisk;
+	private boolean isBelongConflictJar;
 	private Set<String> outs;
 	//	private Set<String> ins;
 
@@ -26,7 +27,18 @@ public class Node4path implements INode {
 			outs = new HashSet<String>();
 		//		ins = new TreeSet<String>();
 	}
-
+	public Node4path(String name, boolean isHost, boolean isRisk, boolean isBelongConflictJar) {
+		super();
+		this.name = name;
+		this.isHost = isHost;
+		this.isRisk = isRisk;
+		this.isBelongConflictJar = isBelongConflictJar;
+		if (GlobalVar.useTreeSet)
+			outs = new TreeSet<String>();
+		else
+			outs = new HashSet<String>();
+		//		ins = new TreeSet<String>();
+	}
 	@Override
 	public String getName() {
 		return name;
@@ -57,6 +69,10 @@ public class Node4path implements INode {
 
 	public boolean isHostNode() {
 		return isHost;
+	}
+	
+	public boolean isBelongConflictJarNode() {
+		return isBelongConflictJar;
 	}
 	//	public void addInNd(String src) {
 	//		ins.add(src);

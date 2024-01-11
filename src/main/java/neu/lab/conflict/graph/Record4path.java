@@ -24,6 +24,10 @@ public class Record4path extends IRecord {
 	public IRecord clone() {
 		return null;
 	}
+	
+	public String getName() {
+		return riskMthd;
+	}
 
 	public void setPathStr(String pathStr) {
 		this.pathStr = pathStr;

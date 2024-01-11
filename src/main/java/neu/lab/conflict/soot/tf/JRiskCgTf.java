@@ -7,26 +7,39 @@ import java.util.Set;
 
 import neu.lab.conflict.graph.IGraph;
 import neu.lab.conflict.risk.jar.DepJarJRisk;
+import neu.lab.conflict.util.Conf;
 import neu.lab.conflict.util.LibCopyInfo;
 import neu.lab.conflict.util.MavenUtil;
+import soot.Scene;
 import soot.SceneTransformer;
 import soot.jimple.toolkits.callgraph.CHATransformer;
+import soot.jimple.toolkits.callgraph.CallGraph;
 
 /**
- * to get call-graph.
- * 得到call-graph
+ * to get call-graph. 得到call-graph
+ * 
  * @author asus
  *
  */
 public abstract class JRiskCgTf extends SceneTransformer {
 
 	// private DepJarJRisk depJarJRisk;
-	protected Set<String> entryClses;	//入口类集合
-	protected Set<String> conflictJarClses;		//冲突jar类集合
-	protected Set<String> riskMthds;	//风险方法集合
+	protected Set<String> entryClses; // 入口类集合
+	protected Set<String> conflictJarClses; // 冲突jar类集合
+	protected Set<String> usedJarClasses; // 冲突jar类集合
+	protected Set<String> riskMthds; // 风险方法集合
 	protected Set<String> rchMthds;
 	protected IGraph graph;
 	protected Map<String, Integer> mthd2branch;
+
+	protected static CallGraph instance = null;
+
+	public static CallGraph getThisCallGraph() {
+		if (instance == null) {
+			instance = Scene.v().getCallGraph();// 得到图
+		}
+		return instance;
+	}
 
 	public JRiskCgTf(DepJarJRisk depJarJRisk) {
 		super();
@@ -37,8 +50,10 @@ public abstract class JRiskCgTf extends SceneTransformer {
 		rchMthds = new HashSet<String>();
 
 	}
+
 	/**
 	 * 重构函数
+	 * 
 	 * @param depJarJRisk
 	 * @param thrownMethods
 	 */
@@ -47,6 +62,7 @@ public abstract class JRiskCgTf extends SceneTransformer {
 		// this.depJarJRisk = depJarJRisk;
 		entryClses = depJarJRisk.getEntryJar().getAllCls(true);
 		conflictJarClses = depJarJRisk.getConflictJar().getAllCls(true);
+		usedJarClasses = depJarJRisk.getUsedJar().getAllCls(true);
 		riskMthds = thrownMethods;
 		rchMthds = new HashSet<String>();
 
@@ -55,28 +71,30 @@ public abstract class JRiskCgTf extends SceneTransformer {
 	@Override
 	protected void internalTransform(String arg0, Map<String, String> arg1) {
 
-		MavenUtil.i().getLog().info("JRiskCgTf start..");
-		Map<String, String> cgMap = new HashMap<String, String>();
-		cgMap.put("enabled", "true");
-		cgMap.put("apponly", "true");
-		cgMap.put("all-reachable", "true");
-		// // set entry
-		// List<SootMethod> entryMthds = new ArrayList<SootMethod>();
-		//		List<MethodSource> mthds = new ArrayList<MethodSource>();
-		//		for (SootClass sootClass : Scene.v().getApplicationClasses()) {
-		//			if (entryClses.contains(sootClass.getName())) {// entry class
-		//				for (SootMethod method : sootClass.getMethods()) {
-		//					mthds.add(method.getSource());
-		//					// entryMthds.add(method);
-		//				}
-		//			}
-		//		}
-		// Scene.v().setEntryPoints(entryMthds);
-		initMthd2branch();
-
-		CHATransformer.v().transform("wjtp", cgMap);
+		if (!Conf.subdivisionLevel) {
+			MavenUtil.i().getLog().info("JRiskCgTf start..");
+			if (instance == null) {
+				Map<String, String> cgMap = new HashMap<String, String>();
+				cgMap.put("enabled", "true");
+				cgMap.put("apponly", "true");
+				cgMap.put("all-reachable", "true");
+				initMthd2branch();
+				CHATransformer.v().transform("wjtp", cgMap);
+			}
+		} else {
+			MavenUtil.i().getLog().info("JRiskCgTf start..");
+			Map<String, String> cgMap = new HashMap<String, String>();
+			cgMap.put("enabled", "true");
+			cgMap.put("apponly", "true");
+			cgMap.put("all-reachable", "true");
+			initMthd2branch();
+			CHATransformer.v().transform("wjtp", cgMap);
+			
+			instance = Scene.v().getCallGraph();
+		}
 
 		formGraph();
+
 		MavenUtil.i().getLog().info("JRiskCgTf end..");
 	}
 

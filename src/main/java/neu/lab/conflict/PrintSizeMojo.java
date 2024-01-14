@@ -18,7 +18,7 @@ public class PrintSizeMojo extends ConflictMojo{
 	public void run() {
 		try {
 			//PrintWriter printer = new PrintWriter(new BufferedWriter(new FileWriter("D:\\ws_testcase\\image\\projectSize.txt",true)));
-			PrintWriter printer = new PrintWriter(new BufferedWriter(new FileWriter(UserConf.getOutDir4Mac() + "projectSize.txt", true)));
+			PrintWriter printer = new PrintWriter(new BufferedWriter(new FileWriter(UserConf.getOutDir() + "projectSize.txt", true)));
 			printer.println(MavenUtil.i().getBaseDir()+" "+systemSize+" "+(systemFileSize / 1000));
 			printer.close();
 		} catch (IOException e) {
